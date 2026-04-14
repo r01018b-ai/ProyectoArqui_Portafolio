@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto · Jazmine JZ</title>
+  <meta name="description" content="Ponte en contacto con Jazmine Zuleta González." />
+  <link rel="stylesheet" href="../recursos/css/estilos.css" />
+</head>
+<body>
+
+<!-- ── NAVBAR ──────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="../index.html">
+      <div class="logo-icon">🌸</div>
+      <span>Jazmine JZ</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="../index.html"  data-page="inicio">Inicio</a></li>
+      <li><a class="nav-link" href="sobreMi.html"   data-page="sobreMi">Sobre mí</a></li>
+      <li><a class="nav-link" href="cursos.html"    data-page="cursos">Portafolio</a></li>
+      <li><a class="nav-link" href="contacto.html"  data-page="contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <button class="btn-theme" onclick="TEMA.toggle()">🌙</button>
+      <a href="login.html" class="btn-login">Iniciar sesión</a>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── PAGE HEADER ──────────────────────────────────────────────── -->
+<header class="page-header">
+  <div class="ph-inner">
+    <span class="ph-icon">💌</span>
+    <h1 class="ph-title">Ponte en <span class="grad">Contacto</span></h1>
+    <p class="ph-desc">¿Preguntas sobre mis proyectos o quieres colaborar?<br>Estaré encantada de responder.</p>
+  </div>
+</header>
+
+<!-- ── CONTACTO GRID ─────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <!-- Información -->
+      <div>
+        <div class="contact-info-card">
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:22px;color:var(--txt)">
+            📋 Información
+          </h2>
+          <div class="contact-item">
+            <div class="citem-icon">✉️</div>
+            <div>
+              <div class="citem-label">Correo</div>
+              <div class="citem-val" id="cCorreo">—</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="citem-icon">📞</div>
+            <div>
+              <div class="citem-label">Teléfono</div>
+              <div class="citem-val" id="cTelefono">—</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="citem-icon">📍</div>
+            <div>
+              <div class="citem-label">Ubicación</div>
+              <div class="citem-val" id="cUbicacion">—</div>
+            </div>
+          </div>
+          <!-- Redes -->
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+            <div style="font-size:.78rem;font-weight:700;color:var(--txt-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">Redes sociales</div>
+            <div style="display:flex;flex-direction:column;gap:10px" id="cRedes"></div>
+          </div>
+        </div>
+
+        <!-- Tarjeta inspiracional -->
+        <div class="card fade-in-up mt-4" style="background:var(--g-primary);border:none;text-align:center;padding:32px">
+          <div style="font-size:2.5rem;margin-bottom:12px">💜</div>
+          <p style="color:rgba(255,255,255,.9);font-size:.95rem;line-height:1.7;font-style:italic">
+            "La tecnología es la herramienta, la creatividad es la fuerza."
+          </p>
+          <div style="margin-top:12px;color:rgba(255,255,255,.7);font-size:.8rem">— Jazmine JZ</div>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="contact-form-card fade-in-up d2">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:22px;color:var(--txt)">
+          ✍️ Enviar mensaje
+        </h2>
+        <form id="formContacto" onsubmit="enviarMensaje(event)">
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="cNombre">Nombre *</label>
+              <input type="text" class="form-control" id="cNombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cEmail">Correo *</label>
+              <input type="email" class="form-control" id="cEmail" placeholder="correo@ejemplo.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cAsunto">Asunto *</label>
+            <input type="text" class="form-control" id="cAsunto" placeholder="¿Sobre qué es tu mensaje?" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cMensaje">Mensaje *</label>
+            <textarea class="form-control" id="cMensaje" rows="6" placeholder="Escribe tu mensaje aquí…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-full btn-lg" id="btnEnviar">
+            Enviar mensaje 💌
+          </button>
+        </form>
+        <!-- Mensajes enviados guardados localmente -->
+        <div id="mensajesRecibidos" style="margin-top:28px;display:none">
+          <div style="font-size:.82rem;font-weight:700;color:var(--txt-m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">
+            📥 Mensajes recibidos (Admin)
+          </div>
+          <div id="listaMensajes"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="logo-icon">🌸</div><span>Jazmine JZ</span></div>
+      <p class="footer-desc">Portafolio académico · Ingeniería de Sistemas</p>
+      <div class="social-links" id="fSocial"></div>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="../index.html">Inicio</a>
+        <a class="footer-link" href="sobreMi.html">Sobre mí</a>
+        <a class="footer-link" href="cursos.html">Portafolio</a>
+        <a class="footer-link" href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Acceso</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="login.html">Iniciar sesión</a>
+        <a class="footer-link" href="admin.html">Panel admin</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Jazmine Zuleta González. Hecho con <span class="heart">💜</span></span>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ───────────────────────────────────────────────────── -->
+<script src="../datos/datosApp.js"></script>
+<script src="../recursos/js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initNav('contacto');
+    initFadeIn();
+    const p = DB.getPerfil();
+
+    document.getElementById('cCorreo').textContent   = p.correo    || '—';
+    document.getElementById('cTelefono').textContent = p.telefono  || '—';
+    document.getElementById('cUbicacion').textContent= p.ubicacion || '—';
+
+    const redesEl = document.getElementById('cRedes');
+    const redes = [
+      { icon: '🔗', label: 'LinkedIn',  url: p.linkedin  },
+      { icon: '🐙', label: 'GitHub',    url: p.github    },
+      { icon: '📸', label: 'Instagram', url: p.instagram }
+    ];
+    redesEl.innerHTML = redes.filter(r => r.url && r.url !== '#').map(r => `
+      <a href="${r.url}" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:10px;font-size:.875rem;color:var(--txt);text-decoration:none;padding:8px 12px;border-radius:var(--r-m);border:1px solid var(--border);transition:var(--tr)"
+         onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'"
+         onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--txt)'">
+        <span>${r.icon}</span><span>${r.label}</span><span style="margin-left:auto;color:var(--txt-m)">↗</span>
+      </a>`).join('');
+
+    const fS = document.getElementById('fSocial');
+    if (fS) fS.innerHTML = `
+      <a class="social-link" href="${p.linkedin||'#'}" title="LinkedIn">in</a>
+      <a class="social-link" href="${p.github||'#'}"   title="GitHub">gh</a>
+      <a class="social-link" href="${p.instagram||'#'}" title="Instagram">ig</a>`;
+
+    // Mostrar mensajes si es admin
+    if (AUTH.isAdmin()) cargarMensajes();
+  });
+
+  function enviarMensaje(e) {
+    e.preventDefault();
+    const msg = {
+      id:       generateId(),
+      nombre:   document.getElementById('cNombre').value.trim(),
+      correo:   document.getElementById('cEmail').value.trim(),
+      asunto:   document.getElementById('cAsunto').value.trim(),
+      mensaje:  document.getElementById('cMensaje').value.trim(),
+      fecha:    new Date().toLocaleString('es-CO')
+    };
+    const msgs = JSON.parse(localStorage.getItem('jz_mensajes') || '[]');
+    msgs.unshift(msg);
+    localStorage.setItem('jz_mensajes', JSON.stringify(msgs));
+    document.getElementById('formContacto').reset();
+    TOAST.show('¡Mensaje enviado exitosamente! 💌', 'success');
+    if (AUTH.isAdmin()) cargarMensajes();
+  }
+
+  function cargarMensajes() {
+    const wrap = document.getElementById('mensajesRecibidos');
+    const lista = document.getElementById('listaMensajes');
+    const msgs  = JSON.parse(localStorage.getItem('jz_mensajes') || '[]');
+    if (!msgs.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    lista.innerHTML = msgs.map(m => `
+      <div style="border:1px solid var(--border);border-radius:var(--r-m);padding:14px;margin-bottom:10px;background:var(--bg)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+          <div>
+            <strong style="font-size:.875rem;color:var(--txt)">${m.nombre}</strong>
+            <span style="font-size:.75rem;color:var(--txt-m);margin-left:8px">${m.correo}</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <span style="font-size:.72rem;color:var(--txt-m)">${m.fecha}</span>
+            <button class="btn btn-icon" style="color:#ef4444;width:28px;height:28px;font-size:.7rem"
+                    onclick="eliminarMsg('${m.id}')">🗑</button>
+          </div>
+        </div>
+        <div style="font-size:.82rem;font-weight:600;color:var(--txt2);margin-bottom:4px">📌 ${m.asunto}</div>
+        <div style="font-size:.82rem;color:var(--txt-m);line-height:1.6">${m.mensaje}</div>
+      </div>`).join('');
+  }
+
+  function eliminarMsg(id) {
+    let msgs = JSON.parse(localStorage.getItem('jz_mensajes') || '[]');
+    msgs = msgs.filter(m => m.id !== id);
+    localStorage.setItem('jz_mensajes', JSON.stringify(msgs));
+    cargarMensajes();
+    TOAST.show('Mensaje eliminado', 'info');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso Administrador · Jazmine JZ</title>
+  <meta name="description" content="Panel de acceso administrativo del portafolio de Jasmin Elena Acosta Fernández." />
+  <link rel="stylesheet" href="../recursos/css/estilos.css" />
+  <style>
+    .login-bg {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--g-hero);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-bg::before {
+      content: '';
+      position: absolute;
+      top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(192,132,252,.22) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulseGlow 7s ease-in-out infinite;
+    }
+    .login-bg::after {
+      content: '';
+      position: absolute;
+      bottom: -20%; left: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(244,114,182,.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulseGlow 9s ease-in-out infinite reverse;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 48px 42px 42px;
+      box-shadow: var(--sh-xl);
+      position: relative;
+      z-index: 2;
+      animation: slideUp .4s cubic-bezier(.22,1,.36,1);
+    }
+    .lc-header { text-align: center; margin-bottom: 34px; }
+    .lc-logo {
+      width: 68px; height: 68px;
+      background: var(--g-primary);
+      border-radius: var(--r-l);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 16px;
+      box-shadow: var(--sh-m);
+      position: relative;
+    }
+    .lc-logo::after {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: calc(var(--r-l) + 3px);
+      background: var(--g-primary);
+      opacity: .25;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+    .lc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--txt);
+      margin-bottom: 5px;
+    }
+    .lc-sub { font-size: .875rem; color: var(--txt-m); }
+    .lc-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 14px;
+      background: rgba(147,51,234,.1);
+      border: 1px solid rgba(147,51,234,.2);
+      border-radius: var(--r-f);
+      font-size: .74rem; font-weight: 700; color: var(--primary);
+      margin-top: 10px;
+    }
+    .login-form { display: flex; flex-direction: column; gap: 18px; }
+    .lf-group { display: flex; flex-direction: column; gap: 7px; }
+    .lf-label {
+      font-size: .84rem; font-weight: 600;
+      color: var(--txt2);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .lf-input-wrap { position: relative; }
+    .lf-icon {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--txt-m); font-size: 1rem;
+      pointer-events: none;
+    }
+    .lf-input {
+      width: 100%;
+      padding: 12px 42px 12px 44px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-m);
+      color: var(--txt);
+      font-size: .9rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--tr);
+    }
+    .lf-input:focus {
+      border-color: var(--primary);
+      background: var(--card);
+      box-shadow: 0 0 0 4px rgba(147,51,234,.1);
+    }
+    .lf-eye {
+      position: absolute; right: 13px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--txt-m); cursor: pointer; font-size: .9rem;
+      transition: var(--tr); padding: 4px;
+    }
+    .lf-eye:hover { color: var(--primary); }
+    .btn-login-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--g-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-m);
+      font-size: .95rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--tr);
+      box-shadow: var(--sh-m);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-login-submit::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background .3s;
+    }
+    .btn-login-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sh-l);
+      filter: brightness(1.08);
+    }
+    .btn-login-submit:active { transform: translateY(0); }
+    .btn-login-submit:disabled {
+      opacity: .7; cursor: not-allowed; transform: none;
+    }
+    .lc-divider {
+      display: flex; align-items: center; gap: 10px;
+      color: var(--txt-m); font-size: .78rem;
+      margin: 6px 0;
+    }
+    .lc-divider::before, .lc-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .lc-hint {
+      text-align: center;
+      font-size: .78rem; color: var(--txt-m);
+      padding: 12px 16px;
+      background: var(--bg2);
+      border-radius: var(--r-m);
+      border: 1px solid var(--border);
+    }
+    .lc-hint strong { color: var(--primary); }
+    .lc-back {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .lc-back a {
+      font-size: .84rem; color: var(--txt-m);
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: var(--tr);
+    }
+    .lc-back a:hover { color: var(--primary); }
+    .error-msg {
+      display: none;
+      padding: 10px 14px;
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: var(--r-m);
+      color: #dc2626;
+      font-size: .84rem;
+      font-weight: 500;
+      text-align: center;
+    }
+    .error-msg.show { display: block; animation: slideUp .3s ease; }
+
+    /* Partículas decorativas */
+    .particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .particle {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--g-primary);
+      border-radius: 50%;
+      opacity: .4;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+    .p1 { top: 15%; left: 8%;  animation-delay: 0s;    width: 8px; height: 8px; }
+    .p2 { top: 70%; right: 6%; animation-delay: 1.5s;  width: 5px; height: 5px; }
+    .p3 { top: 40%; left: 4%;  animation-delay: 3s;    width: 4px; height: 4px; }
+    .p4 { top: 20%; right: 12%;animation-delay: 2s;    width: 7px; height: 7px; }
+    .p5 { top: 80%; left: 15%; animation-delay: 0.5s;  width: 5px; height: 5px; }
+  </style>
+</head>
+<body>
+
+<!-- Partículas decorativas -->
+<div class="particles">
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+</div>
+
+<!-- ── BOTÓN TEMA (flotante) ─── -->
+<button class="btn-theme"
+        onclick="TEMA.toggle()"
+        title="Cambiar tema"
+        style="position:fixed;top:18px;right:18px;z-index:100">🌙</button>
+
+<!-- ── LOGIN CARD ─── -->
+<div class="login-bg">
+  <div class="login-card">
+
+    <!-- Header -->
+    <div class="lc-header">
+      <div class="lc-logo">🌸</div>
+      <div class="lc-title">Panel Admin</div>
+      <div class="lc-sub">Portafolio de Jasmin Elena Acosta F.</div>
+      <div class="lc-badge">🔐 Acceso restringido</div>
+    </div>
+
+    <!-- Formulario -->
+    <form class="login-form" id="loginForm" onsubmit="handleLogin(event)" novalidate>
+
+      <!-- Usuario -->
+      <div class="lf-group">
+        <label class="lf-label" for="loginUsuario">👤 Usuario</label>
+        <div class="lf-input-wrap">
+          <span class="lf-icon">👤</span>
+          <input
+            type="text"
+            id="loginUsuario"
+            class="lf-input"
+            placeholder="Ingresa tu usuario"
+            autocomplete="username"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="lf-group">
+        <label class="lf-label" for="loginPassword">🔑 Contraseña</label>
+        <div class="lf-input-wrap">
+          <span class="lf-icon">🔑</span>
+          <input
+            type="password"
+            id="loginPassword"
+            class="lf-input"
+            placeholder="Ingresa tu contraseña"
+            autocomplete="current-password"
+            required
+          />
+          <span class="lf-eye" onclick="togglePass()" id="eyeBtn" title="Mostrar/ocultar">👁</span>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-msg" id="errorMsg">⚠️ Usuario o contraseña incorrectos</div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-login-submit" id="btnLogin">
+        🚀 Ingresar al Panel
+      </button>
+
+    </form>
+
+    <!-- Hint -->
+    <div class="lc-divider">credenciales por defecto</div>
+    <div class="lc-hint">
+      Usuario: <strong>admin</strong> &nbsp;·&nbsp; Contraseña: <strong>admin123</strong>
+    </div>
+
+    <!-- Volver -->
+    <div class="lc-back">
+      <a href="../index.html">← Volver al portafolio público</a>
+    </div>
+
+  </div>
+</div>
+
+<script src="../datos/datosApp.js"></script>
+<script src="../recursos/js/app.js"></script>
+<script>
+  /* Inicializar tema */
+  TEMA.init();
+
+  /* Mostrar / ocultar contraseña */
+  function togglePass() {
+    const inp = document.getElementById('loginPassword');
+    const eye = document.getElementById('eyeBtn');
+    if (inp.type === 'password') {
+      inp.type = 'password' === 'password' ? 'text' : 'password';
+      inp.type = 'text';
+      eye.textContent = '🙈';
+    } else {
+      inp.type = 'password';
+      eye.textContent = '👁';
+    }
+  }
+
+  /* Si ya está logueado, redirigir */
+  document.addEventListener('DOMContentLoaded', () => {
+    const session = DB.getSession();
+    if (session?.logged && session?.rol === 'admin') {
+      window.location.replace('admin.html');
+    }
+  });
+
+  /* Manejar login */
+  function handleLogin(e) {
+    e.preventDefault();
+    const btn      = document.getElementById('btnLogin');
+    const errorDiv = document.getElementById('errorMsg');
+    const usuario  = document.getElementById('loginUsuario').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!usuario || !password) {
+      errorDiv.textContent = '⚠️ Completa todos los campos';
+      errorDiv.classList.add('show');
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = '⏳ Verificando…';
+    errorDiv.classList.remove('show');
+
+    setTimeout(() => {
+      const ok = AUTH.login(usuario, password);
+      if (ok) {
+        btn.textContent = '✅ Acceso concedido…';
+        TOAST.show('¡Bienvenida al panel! 💜', 'success');
+        setTimeout(() => window.location.replace('admin.html'), 800);
+      } else {
+        errorDiv.textContent = '⚠️ Usuario o contraseña incorrectos';
+        errorDiv.classList.add('show');
+        btn.disabled    = false;
+        btn.textContent = '🚀 Ingresar al Panel';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('loginPassword').focus();
+      }
+    }, 600);
+  }
+
+  /* Enter en los campos */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const form = document.getElementById('loginForm');
+      if (form) form.requestSubmit();
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio | Jasmin Acosta</title>
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --secondary: #ec4899;
+      --bg: #0f0f1a;
+      --card: #1a1a2e;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 60px 40px;
+      text-align: center;
+    }
+    header h1 { font-size: 2.8rem; margin-bottom: 8px; }
+    header p  { color: rgba(255,255,255,.85); font-size: 1.1rem; }
+
+    nav {
+      background: var(--card);
+      display: flex; justify-content: center; gap: 30px;
+      padding: 14px; border-bottom: 2px solid rgba(124,58,237,.3);
+    }
+    nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-weight: 600; transition: color .2s;
+    }
+    nav a:hover { color: var(--primary); }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+    .section-title {
+      font-size: 1.5rem; margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .skills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+    .skill-tag {
+      background: rgba(124,58,237,.2); border: 1px solid rgba(124,58,237,.4);
+      color: #c4b5fd; padding: 6px 16px; border-radius: 999px;
+      font-size: .85rem; font-weight: 600;
+    }
+
+    .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 20px; }
+    .project-card {
+      background: var(--card); border: 1px solid rgba(124,58,237,.25);
+      border-radius: 12px; padding: 22px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(124,58,237,.2); }
+    .project-card h3 { color: #c4b5fd; margin-bottom: 8px; }
+    .project-card p  { color: var(--text-muted); font-size: .88rem; line-height: 1.6; }
+    .project-badge {
+      display: inline-block; margin-top: 12px;
+      background: rgba(236,72,153,.2); border: 1px solid rgba(236,72,153,.4);
+      color: #f9a8d4; font-size: .75rem; padding: 3px 10px; border-radius: 999px;
+    }
+
+    footer {
+      text-align: center; padding: 30px;
+      color: var(--text-muted); font-size: .85rem;
+      border-top: 1px solid rgba(124,58,237,.2);
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Jasmin Elena Acosta Fernández</h1>
+  <p>Estudiante de Ingeniería de Sistemas · UPLA · 2026</p>
+</header>
+<nav>
+  <a href="#sobre">Sobre mí</a>
+  <a href="#skills">Habilidades</a>
+  <a href="#proyectos">Proyectos</a>
+</nav>
+<div class="container">
+  <section id="sobre">
+    <h2 class="section-title">👩‍💻 Sobre mí</h2>
+    <p style="color:var(--text-muted);line-height:1.8;margin-bottom:32px">
+      Estudiante de 5.° ciclo de la Escuela de Sistemas y Computación de la
+      Universidad Peruana Los Andes (UPLA), Huancayo. Apasionada por el
+      desarrollo web, las bases de datos y la arquitectura de software.
+    </p>
+  </section>
+  <section id="skills">
+    <h2 class="section-title">🎯 Habilidades</h2>
+    <div class="skills">
+      <span class="skill-tag">HTML & CSS</span>
+      <span class="skill-tag">JavaScript</span>
+      <span class="skill-tag">SQL / MySQL</span>
+      <span class="skill-tag">Java / POO</span>
+      <span class="skill-tag">Redes TCP/IP</span>
+      <span class="skill-tag">Git & GitHub</span>
+      <span class="skill-tag">Arquitectura MVC</span>
+    </div>
+  </section>
+  <section id="proyectos">
+    <h2 class="section-title">🚀 Proyectos</h2>
+    <div class="projects">
+      <div class="project-card">
+        <h3>Portafolio Digital</h3>
+        <p>Portafolio personal con arquitectura MVC, gestión de archivos académicos y panel de administración.</p>
+        <span class="project-badge">HTML · CSS · JS</span>
+      </div>
+      <div class="project-card">
+        <h3>Sistema de Matrícula</h3>
+        <p>Aplicación de consola en Java para gestión de matrícula universitaria con POO y patrones de diseño.</p>
+        <span class="project-badge">Java · POO</span>
+      </div>
+      <div class="project-card">
+        <h3>BD Universidad UPLA</h3>
+        <p>Diseño e implementación de base de datos relacional para gestión académica universitaria.</p>
+        <span class="project-badge">SQL · MySQL</span>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>© 2026 Jasmin Elena Acosta Fernández · UPLA · Ingeniería de Sistemas</footer>
+</body>
+</html>
