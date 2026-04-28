@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semanas · Portafolio · Jasmin Elena</title>
+  <meta name="description" content="Materiales organizados por semana de cada curso académico." />
+  <link rel="stylesheet" href="../recursos/css/estilos.css" />
+  <style>
+    /* ─── CURSO TITLE SECTION ─────────────────────────────── */
+    .curso-title-bar {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 24px 32px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .curso-title-icon {
+      width: 60px; height: 60px;
+      background: var(--g-primary);
+      border-radius: var(--r-l);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem;
+      flex-shrink: 0;
+      box-shadow: var(--sh-m);
+    }
+    .curso-title-info { flex: 1; min-width: 200px; }
+    .curso-title-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: var(--g-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .curso-title-info p {
+      font-size: .84rem;
+      color: var(--txt-m);
+    }
+    .curso-badges {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .curso-badge-item {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 14px;
+      border-radius: var(--r-f);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--txt-m);
+    }
+
+    /* ─── GRID DE SEMANAS (3 cols) ────────────────────────── */
+    .semanas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 860px)  { .semanas-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px)  { .semanas-grid { grid-template-columns: 1fr; } }
+
+    /* ─── TARJETA DE SEMANA ───────────────────────────────── */
+    .semana-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: var(--r-l);
+      padding: 22px 20px 18px;
+      transition: var(--tr);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .semana-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--border);
+      transition: var(--tr);
+    }
+    .semana-card.has-files::before { background: var(--g-primary); }
+    .semana-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: var(--sh-l);
+    }
+    .sc-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .sc-num-badge {
+      width: 40px; height: 40px;
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-m);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem;
+      font-weight: 900;
+      font-family: 'Playfair Display', serif;
+      color: var(--txt-m);
+      flex-shrink: 0;
+      transition: var(--tr);
+    }
+    .semana-card.has-files .sc-num-badge {
+      background: var(--g-primary);
+      border-color: transparent;
+      color: #fff;
+    }
+    .sc-info { flex: 1; min-width: 0; }
+    .sc-label {
+      font-size: .65rem;
+      font-weight: 700;
+      color: var(--txt-m);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-bottom: 2px;
+    }
+    .sc-titulo {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--txt);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sc-file-count {
+      font-size: .72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--r-f);
+      background: var(--bg2);
+      color: var(--txt-m);
+      align-self: flex-start;
+    }
+    .sc-file-count.has {
+      background: rgba(147,51,234,.12);
+      color: var(--primary);
+    }
+    .sc-btn {
+      display: block;
+      width: 100%;
+      padding: 10px 0;
+      border-radius: var(--r-m);
+      background: var(--g-primary);
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: var(--tr);
+      font-family: inherit;
+      letter-spacing: .3px;
+      margin-top: auto;
+    }
+    .sc-btn:hover { filter: brightness(1.12); transform: scale(1.02); }
+    .sc-btn:active { transform: scale(.98); }
+
+    /* ─── MODAL FLOTANTE DE SEMANA ────────────────────────── */
+    .semana-modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0,0,0,.5);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .semana-modal-overlay.show {
+      display: flex;
+      animation: fadeInOverlay .25s ease;
+    }
+    @keyframes fadeInOverlay { from { opacity:0; } to { opacity:1; } }
+
+    .semana-modal {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      width: 100%;
+      max-width: 680px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 90px rgba(0,0,0,.3);
+      animation: slideUpModal .3s cubic-bezier(.22,1,.36,1);
+      display: flex;
+      flex-direction: column;
+    }
+    @keyframes slideUpModal {
+      from { opacity:0; transform:translateY(30px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* Modal header */
+    .sm-header {
+      background: var(--g-primary);
+      padding: 22px 26px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      position: sticky; top: 0; z-index: 1;
+    }
+    .sm-header-num {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,.2);
+      border-radius: var(--r-m);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 900; color: #fff;
+      font-family: 'Playfair Display', serif;
+      flex-shrink: 0;
+    }
+    .sm-header-info { flex: 1; min-width: 0; }
+    .sm-header-label {
+      font-size: .7rem; font-weight: 700;
+      color: rgba(255,255,255,.7);
+      text-transform: uppercase; letter-spacing: .8px;
+      margin-bottom: 3px;
+    }
+    .sm-header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 900; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .sm-header-actions { display: flex; gap: 8px; align-items: center; }
+    .sm-nav-btn {
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,.2);
+      border: none; border-radius: var(--r-s);
+      color: #fff; font-size: .85rem;
+      cursor: pointer; transition: var(--tr);
+      display: flex; align-items: center; justify-content: center;
+      font-family: inherit;
+    }
+    .sm-nav-btn:hover { background: rgba(255,255,255,.35); }
+    .sm-nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .sm-close-btn {
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,.2);
+      border: none; border-radius: var(--r-s);
+      color: #fff; font-size: 1rem;
+      cursor: pointer; transition: var(--tr);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sm-close-btn:hover { background: rgba(239,68,68,.4); }
+
+    /* Modal body */
+    .sm-body {
+      padding: 24px 26px 28px;
+      flex: 1;
+    }
+
+    /* Buscador */
+    .sm-search {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .sm-search-icon {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--txt-m); pointer-events: none;
+    }
+    .sm-search input {
+      width: 100%;
+      padding: 9px 14px 9px 38px;
+      border-radius: var(--r-m);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--txt);
+      font-size: .84rem;
+      font-family: inherit;
+      outline: none;
+      transition: var(--tr);
+    }
+    .sm-search input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(147,51,234,.15); }
+
+    /* Grid de archivos dentro del modal */
+    .sm-files-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    /* Tarjeta de archivo */
+    .sm-file-card {
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-m);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: var(--tr);
+    }
+    .sm-file-card:hover {
+      border-color: var(--accent);
+      background: var(--card);
+    }
+    .sm-file-icon {
+      width: 42px; height: 42px;
+      border-radius: var(--r-s);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      background: var(--card);
+    }
+    .sm-file-icon.t-html  { background: rgba(239,68,68,.12); }
+    .sm-file-icon.t-css   { background: rgba(59,130,246,.12); }
+    .sm-file-icon.t-js    { background: rgba(234,179,8,.12); }
+    .sm-file-icon.t-sql   { background: rgba(147,51,234,.12); }
+    .sm-file-icon.t-pdf   { background: rgba(239,68,68,.12); }
+    .sm-file-icon.t-img   { background: rgba(16,185,129,.12); }
+    .sm-file-icon.t-md    { background: rgba(107,114,128,.12); }
+    .sm-file-meta { flex: 1; min-width: 0; }
+    .sm-file-name {
+      font-size: .88rem; font-weight: 700; color: var(--txt);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .sm-file-desc {
+      font-size: .74rem; color: var(--txt-m);
+    }
+    .sm-file-btns {
+      display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .sm-file-btns .btn { font-size: .74rem; padding: 6px 12px; }
+
+    /* Estado vacío */
+    .sm-empty {
+      text-align: center;
+      padding: 44px 20px;
+      color: var(--txt-m);
+    }
+    .sm-empty .se-icon { font-size: 3.2rem; margin-bottom: 14px; display: block; }
+    .sm-empty strong { font-size: .95rem; color: var(--txt); display: block; margin-bottom: 6px; }
+
+    /* Separador de info de curso en semana */
+    .sm-info-strip {
+      display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sm-info-chip {
+      font-size: .72rem; font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--r-f);
+      background: var(--bg2);
+      color: var(--txt-m);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="../index.html">
+      <div class="logo-icon">🌸</div>
+      <span>Jasmin Elena</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="../index.html"  data-page="inicio">Inicio</a></li>
+      <li><a class="nav-link" href="sobreMi.html"   data-page="sobreMi">Sobre mí</a></li>
+      <li><a class="nav-link" href="cursos.html"    data-page="cursos">Portafolio</a></li>
+      <li><a class="nav-link" href="contacto.html"  data-page="contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <button class="btn-theme" onclick="TEMA.toggle()">🌙</button>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── PAGE HEADER (gradiente del curso) ─────────────────────────── -->
+<header class="page-header" id="cursoHeader">
+  <div class="ph-inner">
+    <a href="cursos.html"
+       style="display:inline-flex;align-items:center;gap:6px;font-size:.82rem;
+              color:rgba(255,255,255,.75);margin-bottom:18px;text-decoration:none;
+              padding:5px 14px;border-radius:var(--r-f);background:rgba(255,255,255,.15);
+              backdrop-filter:blur(6px);transition:var(--tr)"
+       onmouseover="this.style.background='rgba(255,255,255,.25)'"
+       onmouseout="this.style.background='rgba(255,255,255,.15)'">
+       ← Volver a Portafolio
+    </a>
+    <span class="ph-icon" id="cursoIcon">📚</span>
+    <h1 class="ph-title" id="cursoTitulo">Cargando…</h1>
+    <p class="ph-desc" id="cursoDesc"></p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap" id="headerBadges">
+      <span id="badgeSemanas" style="display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:var(--r-f);background:rgba(255,255,255,.18);backdrop-filter:blur(8px);font-size:.78rem;font-weight:700;color:#fff">📅 16 semanas</span>
+      <span id="badgeArchivos" style="display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:var(--r-f);background:rgba(255,255,255,.18);backdrop-filter:blur(8px);font-size:.78rem;font-weight:700;color:#fff">📁 0 archivos</span>
+      <span id="badgeCompleto" style="display:inline-flex;align-items:center;gap:5px;padding:6px 16px;border-radius:var(--r-f);background:rgba(255,255,255,.18);backdrop-filter:blur(8px);font-size:.78rem;font-weight:700;color:#fff">✅ 0% completo</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── SECCIÓN PRINCIPAL ──────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+
+    <!-- Subtítulo de sección -->
+    <div style="margin-bottom:24px">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--txt);margin-bottom:6px">
+        📅 Selecciona una <span style="background:var(--g-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">semana</span>
+      </h2>
+      <p style="font-size:.84rem;color:var(--txt-m)">
+        Haz clic en <strong>VER</strong> para explorar los archivos y materiales de esa semana.
+      </p>
+    </div>
+
+    <!-- Grid de semanas (3 columnas) -->
+    <div class="semanas-grid" id="semanasGrid">
+      <!-- Se genera dinámicamente -->
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<footer style="margin-top:40px">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="logo-icon">🌸</div><span>Jasmin Elena</span></div>
+      <p class="footer-desc">Portafolio académico · Ingeniería de Sistemas</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="../index.html">Inicio</a>
+        <a class="footer-link" href="sobreMi.html">Sobre mí</a>
+        <a class="footer-link" href="cursos.html">Portafolio</a>
+        <a class="footer-link" href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Admin</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="login.html">Acceso administrador</a>
+        <a class="footer-link" href="admin.html">Panel admin</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Jasmin Elena Acosta Fernández. Hecho con <span class="heart">💜</span></span>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAL FLOTANTE DE SEMANA
+     ══════════════════════════════════════════════════════════════════ -->
+<div class="semana-modal-overlay" id="semanaModalOverlay" onclick="cerrarModalOverlay(event)">
+  <div class="semana-modal" id="semanaModal">
+
+    <!-- Header del modal -->
+    <div class="sm-header">
+      <div class="sm-header-num" id="smNum">1</div>
+      <div class="sm-header-info">
+        <div class="sm-header-label">Semana del curso</div>
+        <div class="sm-header-title" id="smTitle">Cargando…</div>
+      </div>
+      <div class="sm-header-actions">
+        <button class="sm-nav-btn" id="smBtnPrev" onclick="navegarSemana(-1)" title="Semana anterior">←</button>
+        <button class="sm-nav-btn" id="smBtnNext" onclick="navegarSemana(1)"  title="Semana siguiente">→</button>
+        <button class="sm-close-btn" onclick="cerrarModal()" title="Cerrar">✕</button>
+      </div>
+    </div>
+
+    <!-- Body del modal -->
+    <div class="sm-body">
+
+      <!-- Chips de info -->
+      <div class="sm-info-strip" id="smInfoStrip"></div>
+
+      <!-- Buscador -->
+      <div class="sm-search">
+        <span class="sm-search-icon">🔍</span>
+        <input type="text" id="smBuscar" placeholder="Buscar archivo en esta semana…"
+               oninput="filtrarEnModal(this.value)">
+      </div>
+
+      <!-- Archivos -->
+      <div id="smFilesGrid" class="sm-files-grid"></div>
+
+      <!-- Empty state -->
+      <div id="smEmpty" class="sm-empty hidden">
+        <span class="se-icon">📭</span>
+        <strong>Sin archivos aún</strong>
+        <p>Esta semana todavía no tiene materiales subidos.</p>
+        <div id="smAdminBtn" class="hidden" style="margin-top:16px">
+          <a href="admin.html#archivos" class="btn btn-primary btn-sm">+ Registrar archivo</a>
+        </div>
+      </div>
+
+      <!-- Sin resultados búsqueda -->
+      <div id="smNoResults" class="sm-empty hidden">
+        <span class="se-icon">🔍</span>
+        <strong>Sin resultados</strong>
+        <p>No hay archivos que coincidan con tu búsqueda.</p>
+      </div>
+
+    </div><!-- /sm-body -->
+  </div><!-- /semana-modal -->
+</div><!-- /semana-modal-overlay -->
+
+<!-- ── VISOR DE CONTENIDO ─────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../controladores/supabase.js"></script>
+
+<script src="../recursos/js/app.js"></script>
+<script src="../recursos/js/visor.js"></script>
+<script>
+  /* ─── Estado global ─── */
+  let _curso            = null;
+  let _semanaModal      = null;   // número de semana abierto en el modal
+  let _archivosModal    = [];     // archivos de la semana abierta
+
+  /* ─────────────────────────────────────────────────────────────────
+     INIT
+  ───────────────────────────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', async () => {
+    initNav('cursos');
+    VISOR._build();
+
+    const params = new URLSearchParams(window.location.search);
+    const cId    = params.get('curso');
+    if (!cId) { window.location.href = 'cursos.html'; return; }
+
+    _curso = await window.SupabaseCtrl.getCurso(cId);
+    if (!_curso) { window.location.href = 'cursos.html'; return; }
+
+    // Rellenar header
+    document.title = `${_curso.nombre} · Semanas · Jasmin Elena`;
+    document.getElementById('cursoIcon').textContent   = _curso.icono;
+    document.getElementById('cursoTitulo').textContent = _curso.nombre;
+    document.getElementById('cursoDesc').textContent   = _curso.descripcion;
+    actualizarBadges();
+
+    // Renderizar grid de semanas
+    renderGrid();
+
+    // Si viene semana en la URL, abrir el modal automáticamente
+    const semParam = parseInt(params.get('semana'));
+    if (semParam >= 1 && semParam <= 16) {
+      setTimeout(() => abrirModal(semParam), 300);
+    }
+  });
+
+  /* ─── Badges del header ─── */
+  function actualizarBadges() {
+    const totArch = _curso.semanas.reduce((a, s) => a + s.archivos.length, 0);
+    const conArch = _curso.semanas.filter(s => s.archivos.length > 0).length;
+    const pct     = Math.round(conArch / 16 * 100);
+    document.getElementById('badgeArchivos').textContent = `📁 ${totArch} archivos`;
+    document.getElementById('badgeCompleto').textContent = `✅ ${pct}% completo`;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     RENDER GRID DE SEMANAS (3 columnas)
+  ───────────────────────────────────────────────────────────────── */
+  function renderGrid() {
+    const grid = document.getElementById('semanasGrid');
+    grid.innerHTML = _curso.semanas.map(s => {
+      const n    = s.archivos.length;
+      const hasF = n > 0;
+      return `
+        <div class="semana-card fade-in-up ${hasF ? 'has-files' : ''}" id="sc-${s.numero}">
+          <div class="sc-header">
+            <div class="sc-num-badge">${s.numero}</div>
+            <div class="sc-info">
+              <div class="sc-label">Semana ${s.numero}</div>
+              <div class="sc-titulo" title="${s.titulo}">${s.titulo}</div>
+            </div>
+          </div>
+          <div class="sc-file-count ${hasF ? 'has' : ''}">
+            ${hasF ? '📁 ' + n + ' archivo' + (n > 1 ? 's' : '') : '📭 Sin archivos'}
+          </div>
+          <button class="sc-btn" onclick="abrirModal(${s.numero})" id="ver-${s.numero}">
+            VER →
+          </button>
+        </div>`;
+    }).join('');
+    initFadeIn();
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     ABRIR MODAL DE SEMANA
+  ───────────────────────────────────────────────────────────────── */
+  function abrirModal(num) {
+    if (!_curso) return;
+    const semana = _curso.semanas.find(s => s.numero === num);
+    if (!semana) return;
+
+    _semanaModal   = num;
+    _archivosModal = semana.archivos || [];
+
+    // Poblar caché global para el visor
+    if (!window._JZ_FILE_CACHE) window._JZ_FILE_CACHE = {};
+    _archivosModal.forEach(a => { window._JZ_FILE_CACHE[a.id] = a; });
+
+
+    // Rellenar header del modal
+    document.getElementById('smNum').textContent   = num;
+    document.getElementById('smTitle').textContent = semana.titulo;
+
+    // Chips de info
+    document.getElementById('smInfoStrip').innerHTML = `
+      <span class="sm-info-chip">📚 ${_curso.nombre}</span>
+      <span class="sm-info-chip">📅 Semana ${num} de 16</span>
+      <span class="sm-info-chip">📁 ${_archivosModal.length} archivo${_archivosModal.length !== 1 ? 's' : ''}</span>
+    `;
+
+    // Botones prev / next
+    document.getElementById('smBtnPrev').disabled = (num <= 1);
+    document.getElementById('smBtnNext').disabled = (num >= 16);
+
+    // Limpiar buscador
+    document.getElementById('smBuscar').value = '';
+
+    // Renderizar archivos
+    renderArchivosModal(_archivosModal);
+
+    // Mostrar overlay
+    document.getElementById('semanaModalOverlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    // Actualizar URL
+    const url = new URL(window.location);
+    url.searchParams.set('semana', num);
+    window.history.pushState({}, '', url);
+  }
+
+  /* ─── Navegar entre semanas desde el modal ─── */
+  function navegarSemana(delta) {
+    const nueva = _semanaModal + delta;
+    if (nueva >= 1 && nueva <= 16) abrirModal(nueva);
+  }
+
+  /* ─── Cerrar modal al click en overlay ─── */
+  function cerrarModalOverlay(e) {
+    if (e.target === document.getElementById('semanaModalOverlay')) cerrarModal();
+  }
+
+  /* ─── Cerrar modal ─── */
+  function cerrarModal() {
+    document.getElementById('semanaModalOverlay').classList.remove('show');
+    document.body.style.overflow = '';
+    _semanaModal   = null;
+    _archivosModal = [];
+    const url = new URL(window.location);
+    url.searchParams.delete('semana');
+    window.history.pushState({}, '', url);
+  }
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrarModal();
+  });
+
+  /* ─────────────────────────────────────────────────────────────────
+     RENDER ARCHIVOS EN EL MODAL
+  ───────────────────────────────────────────────────────────────── */
+  function renderArchivosModal(archivos) {
+    const grid   = document.getElementById('smFilesGrid');
+    const empty  = document.getElementById('smEmpty');
+    const noRes  = document.getElementById('smNoResults');
+    const admBtn = document.getElementById('smAdminBtn');
+
+    noRes.classList.add('hidden');
+
+    if (!archivos.length) {
+      grid.innerHTML = '';
+      empty.classList.remove('hidden');
+      admBtn.classList.toggle('hidden', !AUTH.isAdmin());
+      return;
+    }
+    empty.classList.add('hidden');
+
+    const isAdmin = AUTH.isAdmin();
+
+    grid.innerHTML = archivos.map(a => {
+      const ext  = getExtension(a.archivo);
+      const icon = getFileIcon(ext);
+      const cls  = getFileTypeClass(ext);
+      const prev = isPreviewable(ext);
+
+      /* Botones según rol:
+         Visitante → Ver + Descargar
+         Admin     → Ver + Descargar + Eliminar          */
+      const btnVer = prev
+        ? `<button class="btn btn-primary btn-sm" onclick="accionVer('${a.id}')" id="bv-${a.id}" title="Vista previa">👁 Ver</button>`
+        : '';
+      const btnDl  = `<button class="btn btn-ghost btn-sm" onclick="accionDescargar('${a.id}')" id="bd-${a.id}" title="Descargar">⬇ Descargar</button>`;
+      const btnDel = isAdmin
+        ? `<button class="btn btn-sm" style="border-color:rgba(239,68,68,.35);color:#dc2626;background:transparent"
+                   onclick="accionEliminar('${a.id}')" id="bdel-${a.id}" title="Eliminar">🗑</button>`
+        : '';
+
+      return `
+        <div class="sm-file-card" id="sfc-${a.id}">
+          <div class="sm-file-icon ${cls}">${icon}</div>
+          <div class="sm-file-meta">
+            <div class="sm-file-name" title="${a.nombre}">${a.nombre}</div>
+            <div class="sm-file-desc">${a.descripcion || '.' + ext.toUpperCase()}</div>
+          </div>
+          <div class="sm-file-btns">
+            ${btnVer}
+            ${btnDl}
+            ${btnDel}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  /* ─── Filtrar archivos en modal ─── */
+  function filtrarEnModal(query) {
+    const q     = query.toLowerCase().trim();
+    const noRes = document.getElementById('smNoResults');
+    const empty = document.getElementById('smEmpty');
+
+    if (!q) { renderArchivosModal(_archivosModal); return; }
+
+    const filtrados = _archivosModal.filter(a =>
+      a.nombre.toLowerCase().includes(q) ||
+      a.archivo.toLowerCase().includes(q) ||
+      (a.descripcion || '').toLowerCase().includes(q)
+    );
+
+    if (!filtrados.length) {
+      document.getElementById('smFilesGrid').innerHTML = '';
+      empty.classList.add('hidden');
+      noRes.classList.remove('hidden');
+    } else {
+      noRes.classList.add('hidden');
+      renderArchivosModal(filtrados);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     ACCIONES DE ARCHIVOS
+  ───────────────────────────────────────────────────────────────── */
+
+  // 👁 Ver — abre el visor flotante
+  function accionVer(archivoId) {
+    const semana  = _curso.semanas.find(s => s.numero === _semanaModal);
+    const archivo = semana?.archivos.find(a => a.id === archivoId);
+    if (!archivo) return;
+    cerrarModal();
+    VISOR.open(archivo, '../');
+  }
+
+  // ⬇ Descargar
+  function accionDescargar(archivoId) {
+    const semana  = _curso.semanas.find(s => s.numero === _semanaModal);
+    const archivo = semana?.archivos.find(a => a.id === archivoId);
+    if (!archivo) return;
+    const a    = document.createElement('a');
+    a.href     = '../' + archivo.ruta;
+    a.download = archivo.archivo;
+    a.click();
+    TOAST.show('Descarga iniciada 📥', 'success');
+  }
+
+  // 🗑 Eliminar (solo admin)
+  async function accionEliminar(archivoId) {
+    if (!AUTH.isAdmin()) return;
+    if (!confirm('¿Eliminar este archivo del registro?\nEsta acción no puede deshacerse.')) return;
+
+    await window.SupabaseCtrl.deleteArchivo(_curso.id, _semanaModal, archivoId);
+
+    // Sincronizar datos locales
+    _curso         = await window.SupabaseCtrl.getCurso(_curso.id);
+    const semana   = _curso.semanas.find(s => s.numero === _semanaModal);
+    _archivosModal = semana.archivos;
+
+    // Actualizar modal y grid
+    renderArchivosModal(_archivosModal);
+    actualizarBadges();
+    renderGrid();
+
+    // Chip de conteo
+    document.getElementById('smInfoStrip').innerHTML = `
+      <span class="sm-info-chip">📚 ${_curso.nombre}</span>
+      <span class="sm-info-chip">📅 Semana ${_semanaModal} de 16</span>
+      <span class="sm-info-chip">📁 ${_archivosModal.length} archivo${_archivosModal.length !== 1 ? 's' : ''}</span>
+    `;
+
+    TOAST.show('Archivo eliminado del registro', 'info');
+  }
+</script>
+</body>
+</html>
