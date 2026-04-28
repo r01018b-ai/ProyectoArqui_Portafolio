@@ -1,0 +1,42 @@
+-- Script de carga inicial para la Base de Datos de Jazmine (PostgreSQL / Supabase)
+-- Ejecutar en el SQL Editor de Supabase
+-- [VERSIÓN SEGURA: Evita errores si los datos ya existen]
+
+-- 1. Insertar Perfil Inicial
+INSERT INTO public.perfil (
+  id, nombre, apellido, nombre_completo, titulo, bio,
+  correo, telefono, ubicacion, linkedin, github, instagram,
+  skills
+) VALUES (
+  '123e4567-e89b-12d3-a456-426614174000', -- UUID fijo de ejemplo
+  'Jasmin Elena', 'Acosta Fernández', 'Jasmin Elena Acosta Fernández',
+  'Estudiante de Ingeniería de Sistemas y Computación — UPLA',
+  'Estudiante apasionada por el desarrollo web y software, con enfoque en crear soluciones digitales innovadoras.',
+  'jacosta@upla.edu.pe', '+51 964 123 456', 'Huancayo, Perú',
+  '#', '#', '#',
+  '[{"nivel": 90, "nombre": "HTML & CSS"}, {"nivel": 75, "nombre": "JavaScript"}, {"nivel": 65, "nombre": "Python"}, {"nivel": 70, "nombre": "SQL / Bases de Datos"}, {"nivel": 60, "nombre": "Git & GitHub"}]'::jsonb
+) ON CONFLICT (id) DO NOTHING;
+-- Nota: En perfil, si tu id es generado por default sin conflictos, puedes omitir enviar el id, 
+-- pero aquí se inserta asumiendo que es la primera vez.
+
+-- 2. Insertar Cursos de Ejemplo (Ignora si ya existe el ID)
+INSERT INTO public.cursos (id, nombre, descripcion, icono, color) VALUES
+('desarrollo-web-1', 'Desarrollo Web I', 'Fundamentos de HTML, CSS y JavaScript para páginas modernas.', '🌐', '#9333ea'),
+('calculo-diferencial', 'Cálculo Diferencial', 'Límites, derivadas y aplicaciones.', '📐', '#2563eb'),
+('programacion-1', 'Programación I', 'Lógica de programación con Python.', '🐍', '#16a34a')
+ON CONFLICT (id) DO NOTHING;
+
+-- 3. Insertar Semanas para 'Desarrollo Web I'
+-- Usamos 'ON CONFLICT DO NOTHING' por si acaso la llave primaria UUID colisiona o tiene llave compuesta.
+-- Como la ID de semanas es un UUID (autogenerado por default), es poco probable que choque,
+-- pero dejamos la estructura lista.
+INSERT INTO public.semanas (curso_id, numero, titulo) VALUES
+('desarrollo-web-1', 1, 'Introducción a HTML5'),
+('desarrollo-web-1', 2, 'Estructura y semántica HTML'),
+('desarrollo-web-1', 3, 'CSS Fundamentos'),
+('desarrollo-web-1', 4, 'Diseño con Flexbox')
+ON CONFLICT (curso_id, numero) DO NOTHING;
+
+-- Opcional: Insertar un archivo demostrativo
+-- NOTA IMPORTANTE PARA SEGURIDAD (Si lo vas a hacer público):
+-- Activa y configura políticas RLS (Row Level Security) en Supabase para proteger estos datos.
