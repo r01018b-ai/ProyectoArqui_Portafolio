@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sobre mí · Jasmin Elena</title>
+  <meta name="description" content="Conoce más sobre Jasmin Elena Acosta Fernández, estudiante de Ingeniería de Sistemas, sus habilidades, experiencia y formación académica." />
+  <link rel="stylesheet" href="../recursos/css/estilos.css" />
+  <style>
+    /* ─── PROFILE HERO ───────────────────────────────── */
+    .profile-hero {
+      padding: 140px 24px 80px; background: var(--g-hero); position: relative; overflow: hidden;
+    }
+    .profile-inner {
+      max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 320px 1fr;
+      gap: 60px; align-items: center; position: relative; z-index: 10;
+    }
+    @media (max-width: 860px) {
+      .profile-inner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+    }
+
+    .profile-photo-wrap {
+      width: 320px; height: 320px; border-radius: 40px; position: relative;
+      background: var(--bg3); box-shadow: var(--sh-xl); border: 2px solid var(--border);
+      transition: var(--tr); overflow: visible;
+    }
+    .profile-photo-wrap::before {
+      content: ''; position: absolute; inset: -15px; border: 2px solid var(--primary);
+      border-radius: 45px; opacity: 0.3; z-index: -1; animation: pulseGlow 4s infinite;
+    }
+    .profile-photo {
+      width: 100%; height: 100%; border-radius: 38px; overflow: hidden;
+      background: var(--bg2); display: flex; align-items: center; justify-content: center;
+      font-size: 8rem; position: relative;
+    }
+    .profile-photo img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s var(--ease); }
+    .profile-photo-wrap:hover .profile-photo img { transform: scale(1.1); }
+
+    .profile-info h1 {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 900; color: var(--txt); margin-bottom: 12px; line-height: 1.1;
+    }
+    .p-subtitle { font-size: 1.25rem; font-weight: 800; color: var(--primary); margin-bottom: 24px; letter-spacing: 0.5px; }
+    .p-bio { font-size: 1.05rem; color: var(--txt-m); line-height: 1.8; margin-bottom: 30px; }
+
+    .tag {
+      padding: 8px 18px; background: var(--bg2); border: 1.5px solid var(--border);
+      border-radius: 12px; font-size: .85rem; font-weight: 700; color: var(--txt2);
+      transition: var(--tr);
+    }
+    .tag:hover { background: var(--bg3); border-color: var(--primary); transform: translateY(-3px); }
+
+    /* ─── SKILLS REFINED ─────────────────────────────── */
+    .skill-item { margin-bottom: 32px; }
+    .skill-head { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 800; font-size: .95rem; color: var(--txt); }
+    .skill-pct { color: var(--primary); font-size: .85rem; }
+    .skill-bar { height: 10px; background: var(--bg2); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .skill-fill {
+      height: 100%; background: var(--g-primary); border-radius: 10px;
+      transition: width 1.5s var(--ease); position: relative;
+    }
+    .skill-fill::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shine 2s infinite;
+    }
+
+    /* ─── TIMELINE ROYAL ─────────────────────────────── */
+    .timeline { border-left: 2px dashed var(--border); padding-left: 32px; position: relative; margin-left: 10px; }
+    .tl-item { position: relative; margin-bottom: 45px; }
+    .tl-item::before {
+      content: ''; position: absolute; left: -42px; top: 0; width: 18px; height: 18px;
+      background: var(--bg3); border: 3px solid var(--primary); border-radius: 50%;
+      box-shadow: 0 0 15px rgba(139,92,246,0.4); z-index: 5;
+    }
+    .tl-date { font-size: .85rem; font-weight: 900; color: var(--primary); margin-bottom: 6px; letter-spacing: 1px; }
+    .tl-title { font-size: 1.2rem; font-weight: 900; color: var(--txt); margin-bottom: 4px; }
+    .tl-place { font-size: .9rem; font-weight: 700; color: var(--txt2); margin-bottom: 10px; opacity: 0.8; }
+    .tl-desc { font-size: .95rem; color: var(--txt-m); line-height: 1.6; }
+
+    /* ─── PREMIUM CARDS ──────────────────────────────── */
+    .premium-card {
+      background: var(--bg3); border-radius: var(--r-l); border: 1.5px solid var(--border);
+      padding: 32px; box-shadow: var(--sh-m); transition: var(--tr);
+    }
+    .premium-card:hover { box-shadow: var(--sh-xl); border-color: var(--primary); transform: translateY(-5px); }
+
+    @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ──────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="../index.html">
+      <div class="logo-icon">🌸</div>
+      <span>Jasmin Elena</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="../index.html"  data-page="inicio">Inicio</a></li>
+      <li><a class="nav-link" href="sobreMi.html"   data-page="sobreMi">Sobre mí</a></li>
+      <li><a class="nav-link" href="cursos.html"    data-page="cursos">Portafolio</a></li>
+      <li><a class="nav-link" href="contacto.html"  data-page="contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <button class="btn-theme" onclick="TEMA.toggle()">🌙</button>
+      <a href="login.html" class="btn-login">Iniciar sesión</a>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── PERFIL HERO ───────────────────────────────────────────────── -->
+<section class="profile-hero">
+  <div class="profile-inner">
+    <div class="profile-photo-wrap fade-in-up">
+      <div class="profile-photo" id="profilePhoto">🌸</div>
+      <div class="profile-edit-btn" onclick="document.getElementById('inputFoto').click()" title="Cambiar foto">✏️</div>
+      <input type="file" id="inputFoto" accept="image/*" style="display:none" onchange="cambiarFoto(this)">
+    </div>
+    <div class="profile-info fade-in-up" style="animation-delay:0.2s">
+      <h1 id="profileNombre">Jasmin Elena Acosta Fernández</h1>
+      <p class="p-subtitle" id="profileTitulo">Estudiante de Ingeniería de Sistemas</p>
+      <p class="p-bio" id="profileBio">En búsqueda constante de innovación a través del desarrollo de software y la gestión estratégica de sistemas de información.</p>
+      <div class="profile-tags" id="profileTags" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px"></div>
+      <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap">
+        <a href="contacto.html" class="btn btn-primary" style="padding:16px 32px">Contactarme 💌</a>
+        <a href="cursos.html"   class="btn btn-secondary" style="padding:16px 32px">Ver portafolio</a>
+        <button class="btn btn-ghost is-admin-only hidden" onclick="abrirModalEditar()" id="btnEditarPerfil">✏️ Editar perfil</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HABILIDADES ────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-badge">💡 Competencias</div>
+      <h2 class="sec-title">Habilidades <span class="grad">Técnicas</span></h2>
+      <p class="sec-desc">Tecnologías y herramientas que domino para construir soluciones innovadoras.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:40px;max-width:1000px;margin:0 auto">
+      <div id="skillsCol1"></div>
+      <div id="skillsCol2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRAYECTORIA ────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="contact-grid" style="grid-template-columns:1.5fr 1fr">
+      <!-- Educación -->
+      <div>
+        <div class="sec-badge" style="margin-bottom:20px">🎓 Formación</div>
+        <h2 class="sec-title" style="text-align:left;font-size:2rem;font-weight:900;margin-bottom:40px">
+          Trayectoria <span class="grad">Académica</span>
+        </h2>
+        <div class="timeline" id="timelineEdu"></div>
+      </div>
+      <!-- Datos de contacto rápido -->
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <div class="premium-card fade-in-up">
+          <div class="sec-badge" style="margin-bottom:20px">📋 Información</div>
+          <h2 class="sec-title" style="text-align:left;font-size:1.6rem;margin-bottom:30px">
+            Datos de <span class="grad">Contacto</span>
+          </h2>
+          <div id="contactoInfo"></div>
+          <div style="margin-top:30px;padding-top:24px;border-top:1px solid var(--border)">
+            <div style="font-size:.85rem;font-weight:900;color:var(--txt-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px">Redes profesionales</div>
+            <div class="social-links" id="socialLinks"></div>
+          </div>
+        </div>
+        <!-- Currículo -->
+        <div class="premium-card fade-in-up" id="cvCard" style="animation-delay:0.2s">
+          <div style="display:flex;align-items:center;gap:20px">
+            <div style="width:64px;height:64px;background:var(--g-primary);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;box-shadow:var(--sh-m)">📄</div>
+            <div style="flex:1">
+              <div style="font-weight:900;font-size:1.15rem;color:var(--txt);margin-bottom:4px">Descargar CV</div>
+              <div style="font-size:.9rem;color:var(--txt-m);font-weight:500" id="cvNombreLabel">Currículum actualizado</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px">
+            <button class="btn btn-secondary" onclick="visualizarCV()" id="btnVisualizarCV" style="width:100%">👁 Ver</button>
+            <button class="btn btn-primary"   onclick="descargarCV()"  id="btnDescargarCV" style="width:100%">⬇ Bajar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODAL VISOR CV ──────────────────────────────────────────────── -->
+<div id="modalCV" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);padding:20px;align-items:center;justify-content:center">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);width:100%;max-width:860px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.5);overflow:hidden">
+    <div style="display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <div style="width:42px;height:42px;background:var(--g-primary);border-radius:var(--r-m);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📄</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:.95rem;color:var(--txt)" id="cvVisorNombre">Currículum Vitae</div>
+        <div style="font-size:.75rem;color:var(--txt-m)">Vista previa del documento</div>
+      </div>
+      <button onclick="descargarCV()" class="btn btn-primary btn-sm">⬇ Descargar</button>
+      <button onclick="cerrarModalCV()" style="width:34px;height:34px;border-radius:var(--r-m);background:var(--bg2);border:1px solid var(--border);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt)">✕</button>
+    </div>
+    <div style="flex:1;overflow:auto;min-height:500px;background:#525659;position:relative" id="cvVisorBody">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:500px;color:#ccc;gap:12px">
+        <span style="font-size:2.5rem">⏳</span>
+        <span>Cargando vista previa…</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL EDITAR PERFIL (admin) ────────────────────────────────── -->
+<div id="modalEditar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:3000;align-items:center;justify-content:center;padding:20px">
+  <div class="modal-box" style="max-width:560px;max-height:90vh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div class="modal-title">✏️ Editar perfil</div>
+      <button class="btn btn-ghost btn-sm" onclick="cerrarModalEditar()">✕</button>
+    </div>
+    <form id="formEditarPerfil" onsubmit="guardarPerfil(event)">
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="editNombre" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="editApellido" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Título / Carrera</label>
+        <input type="text" class="form-control" id="editTitulo" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Biografía</label>
+        <textarea class="form-control" id="editBio" rows="4"></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Correo</label>
+          <input type="email" class="form-control" id="editCorreo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Teléfono</label>
+          <input type="text" class="form-control" id="editTelefono">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ubicación</label>
+        <input type="text" class="form-control" id="editUbicacion">
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">LinkedIn URL</label>
+          <input type="url" class="form-control" id="editLinkedin">
+        </div>
+        <div class="form-group">
+          <label class="form-label">GitHub URL</label>
+          <input type="url" class="form-control" id="editGithub">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button type="button" class="btn btn-secondary" onclick="cerrarModalEditar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo"><div class="logo-icon">🌸</div><span>Jasmin Elena</span></div>
+      <p class="footer-desc">Portafolio académico · Ingeniería de Sistemas</p>
+      <div class="social-links" id="footerSoc"></div>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="../index.html">Inicio</a>
+        <a class="footer-link" href="sobreMi.html">Sobre mí</a>
+        <a class="footer-link" href="cursos.html">Portafolio</a>
+        <a class="footer-link" href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Acceso</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="login.html">Iniciar sesión</a>
+        <a class="footer-link" href="admin.html">Panel admin</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Jasmin Elena Acosta Fernández. Hecho con <span class="heart">💜</span></span>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ───────────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../controladores/supabase.js"></script>
+<script src="../recursos/js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    initNav('sobreMi');
+    await cargarPerfil();
+    initFadeIn();
+  });
+
+  /* ══ CARGAR PERFIL ══ */
+  async function cargarPerfil() {
+    const p = await window.SupabaseCtrl.getPerfil();
+    if (!p) return;
+
+    // Foto
+    const ph = document.getElementById('profilePhoto');
+    if (p.foto_url && ph) ph.innerHTML = '<img src="' + p.foto_url + '" alt="foto" style="width:100%;height:100%;object-fit:cover">';
+
+    const nc = p.nombre_completo || ((p.nombre||'') + ' ' + (p.apellido||'')).trim();
+    const el = function(id) { return document.getElementById(id); };
+    if (el('profileNombre')) el('profileNombre').textContent = nc;
+    if (el('profileTitulo')) el('profileTitulo').textContent = p.titulo || '';
+    if (el('profileBio'))    el('profileBio').textContent    = p.bio    || '';
+
+    // Tags
+    var pt = el('profileTags');
+    if (pt) pt.innerHTML = [p.ubicacion,'💻 Ingeniería de Sistemas','🌐 Desarrollo Web','🗃️ Bases de Datos']
+      .filter(Boolean).map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('');
+
+    // Skills
+    var skills = p.skills || [];
+    var half = Math.ceil(skills.length / 2);
+    function mkSkill(s) {
+      return '<div class="skill-item fade-in-up">' +
+        '<div class="skill-head"><span>' + s.nombre + '</span><span class="skill-pct">' + s.nivel + '%</span></div>' +
+        '<div class="skill-bar"><div class="skill-fill" data-pct="' + s.nivel + '" style="width:0%"></div></div>' +
+        '</div>';
+    }
+    if (el('skillsCol1')) el('skillsCol1').innerHTML = skills.slice(0, half).map(mkSkill).join('');
+    if (el('skillsCol2')) el('skillsCol2').innerHTML = skills.slice(half).map(mkSkill).join('');
+    setTimeout(function() {
+      document.querySelectorAll('.skill-fill').forEach(function(e) { e.style.width = (e.dataset.pct || 0) + '%'; });
+    }, 300);
+
+    // Timeline
+    var tl = el('timelineEdu');
+    if (tl) tl.innerHTML = (p.experiencia || []).map(function(e) {
+      return '<div class="tl-item fade-in-up"><div class="tl-date">' + e.fecha + '</div>' +
+        '<div class="tl-title">' + e.titulo + '</div>' +
+        '<div class="tl-place">' + e.lugar + '</div>' +
+        '<div class="tl-desc">' + e.descripcion + '</div></div>';
+    }).join('');
+
+    // Contacto
+    var ci = el('contactoInfo');
+    if (ci) ci.innerHTML = [
+      { icon: '✉️', label: 'Correo',    val: p.correo    },
+      { icon: '📞', label: 'Teléfono',  val: p.telefono  },
+      { icon: '📍', label: 'Ubicación', val: p.ubicacion }
+    ].map(function(r) {
+      return '<div class="contact-item" style="margin-bottom:16px">' +
+        '<div class="citem-icon">' + r.icon + '</div>' +
+        '<div><div class="citem-label">' + r.label + '</div>' +
+        '<div class="citem-val">' + (r.val || '—') + '</div></div></div>';
+    }).join('');
+
+    // Social
+    var soc = '<a class="social-link" href="' + (p.linkedin||'#') + '" title="LinkedIn">in</a>' +
+      '<a class="social-link" href="' + (p.github||'#') + '" title="GitHub">gh</a>' +
+      '<a class="social-link" href="' + (p.instagram||'#') + '" title="Instagram">ig</a>';
+    if (el('socialLinks')) el('socialLinks').innerHTML = soc;
+    if (el('footerSoc'))   el('footerSoc').innerHTML   = soc;
+
+    // CV label
+    var cvNombre = p.cv_nombre || localStorage.getItem('jz_cv_nombre');
+    var cvUrl    = p.cv_url    || localStorage.getItem('jz_cv_url');
+    var lbl = el('cvNombreLabel');
+    if (lbl) {
+      if (cvNombre && cvUrl) {
+        lbl.innerHTML = '<span style="color:var(--primary);font-weight:600">✅ ' + cvNombre + '</span>';
+      } else {
+        lbl.innerHTML = '<span style="color:var(--txt-m);font-style:italic">Sin CV cargado aún</span>';
+      }
+    }
+
+    // Botón editar — solo admin
+    var isAdm = await AUTH.isAdmin();
+    if (isAdm) { var b = el('btnEditarPerfil'); if (b) b.classList.remove('hidden'); }
+
+    initFadeIn();
+  }
+
+  /* ══ CV — DESCARGAR ══ */
+  window.descargarCV = async function() {
+    var p        = await window.SupabaseCtrl.getPerfil();
+    var cvUrl    = (p && p.cv_url)    || localStorage.getItem('jz_cv_url');
+    var cvNombre = (p && p.cv_nombre) || localStorage.getItem('jz_cv_nombre') || 'CV_Jasmin_Elena.pdf';
+    if (cvUrl) {
+      var a = document.createElement('a');
+      a.href = cvUrl; a.download = cvNombre;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    } else {
+      TOAST.show('No hay CV cargado aún. Súbelo desde el Panel Admin.', 'info');
+    }
+  };
+
+  /* ══ CV — VISUALIZAR ══ */
+  window.visualizarCV = async function() {
+    var p        = await window.SupabaseCtrl.getPerfil();
+    var cvUrl    = (p && p.cv_url)    || localStorage.getItem('jz_cv_url');
+    var cvNombre = (p && p.cv_nombre) || localStorage.getItem('jz_cv_nombre') || 'Currículum Vitae';
+    if (!cvUrl) { TOAST.show('No hay CV cargado aún. Súbelo desde el Panel Admin.', 'info'); return; }
+
+    var modal = document.getElementById('modalCV');
+    var body  = document.getElementById('cvVisorBody');
+    var title = document.getElementById('cvVisorNombre');
+    if (title) title.textContent = cvNombre;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    var ext = cvNombre.split('.').pop().toLowerCase();
+    if (ext === 'pdf') {
+      body.innerHTML = '<iframe src="' + cvUrl + '" style="width:100%;height:100%;min-height:600px;border:none;display:block" title="CV"></iframe>';
+    } else if (ext === 'doc' || ext === 'docx') {
+      body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;gap:16px;padding:40px;text-align:center;color:#eee">' +
+        '<span style="font-size:4rem">📝</span>' +
+        '<div style="font-size:1rem;font-weight:700">' + cvNombre + '</div>' +
+        '<div style="font-size:.875rem;opacity:.75;max-width:340px">Los archivos Word no se pueden previsualizar. Descárgalo para abrirlo.</div>' +
+        '<button onclick="descargarCV()" class="btn btn-primary">⬇ Descargar</button></div>';
+    } else {
+      body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:400px;gap:14px;color:#eee;padding:40px;text-align:center">' +
+        '<span style="font-size:3rem">📄</span>' +
+        '<div style="font-size:.875rem;opacity:.7">Formato sin vista previa. Descárgalo para verlo.</div>' +
+        '<button onclick="descargarCV()" class="btn btn-primary">⬇ Descargar</button></div>';
+    }
+  };
+
+  /* ══ CV — CERRAR MODAL ══ */
+  window.cerrarModalCV = function() {
+    var m = document.getElementById('modalCV');
+    var b = document.getElementById('cvVisorBody');
+    if (m) m.style.display = 'none';
+    document.body.style.overflow = '';
+    if (b) b.innerHTML = '';
+  };
+
+  /* ══ FOTO PERFIL ══ */
+  window.cambiarFoto = function(input) {
+    if (!input.files.length) return;
+    var reader = new FileReader();
+    reader.onload = async function(e) {
+      var p = await window.SupabaseCtrl.getPerfil();
+      p.foto_url = e.target.result;
+      await window.SupabaseCtrl.savePerfil(p);
+      cargarPerfil();
+      TOAST.show('Foto actualizada 💜', 'success');
+    };
+    reader.readAsDataURL(input.files[0]);
+  };
+
+  /* ══ MODAL EDITAR PERFIL ══ */
+  window.abrirModalEditar = async function() {
+    var p = await window.SupabaseCtrl.getPerfil();
+    function set(id, v) { var e = document.getElementById(id); if (e) e.value = v || ''; }
+    set('editNombre', p.nombre);    set('editApellido', p.apellido);
+    set('editTitulo', p.titulo);    set('editBio', p.bio);
+    set('editCorreo', p.correo);    set('editTelefono', p.telefono);
+    set('editUbicacion', p.ubicacion); set('editLinkedin', p.linkedin);
+    set('editGithub', p.github);
+    document.getElementById('modalEditar').style.display = 'flex';
+  };
+
+  window.cerrarModalEditar = function() {
+    document.getElementById('modalEditar').style.display = 'none';
+  };
+
+  window.guardarPerfil = async function(e) {
+    e.preventDefault();
+    var p = await window.SupabaseCtrl.getPerfil();
+    function g(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+    var n = g('editNombre'), a = g('editApellido');
+    p.nombre = n; p.apellido = a; p.nombre_completo = (n + ' ' + a).trim();
+    p.titulo = g('editTitulo'); p.bio = g('editBio'); p.correo = g('editCorreo');
+    p.telefono = g('editTelefono'); p.ubicacion = g('editUbicacion');
+    p.linkedin = g('editLinkedin'); p.github = g('editGithub');
+    await window.SupabaseCtrl.savePerfil(p);
+    cerrarModalEditar();
+    cargarPerfil();
+    TOAST.show('Perfil actualizado correctamente 💜', 'success');
+  };
+
+  /* ── Cerrar con Escape o clic fuera ── */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { cerrarModalCV(); cerrarModalEditar(); }
+  });
+  document.addEventListener('click', function(e) {
+    var mc = document.getElementById('modalCV');
+    if (mc && e.target === mc) cerrarModalCV();
+    var me = document.getElementById('modalEditar');
+    if (me && e.target === me) cerrarModalEditar();
+  });
+</script>
+</body>
+</html>

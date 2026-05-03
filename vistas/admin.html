@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin · Jasmin Elena</title>
+  <meta name="description" content="Panel de administración del portafolio académico de Jasmin Elena Acosta Fernández." />
+  <link rel="stylesheet" href="../recursos/css/estilos.css" />
+  <style>
+    /* ════════════════════════════════════════════════════════════
+       LAYOUT ADMIN
+    ════════════════════════════════════════════════════════════ */
+    body { overflow-x: hidden; }
+
+    /* Sidebar Premium */
+    .admin-side {
+      background: var(--nav-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid var(--border);
+      box-shadow: 10px 0 40px rgba(0,0,0,0.05);
+    }
+    .adm-separator { margin: 24px 0; border: none; border-top: 1px solid var(--border); opacity: 0.5; }
+
+    /* Botón de colapso sidebar */
+    .side-toggle {
+      display: none;
+      position: fixed; bottom: 20px; right: 20px; z-index: 500;
+      width: 48px; height: 48px;
+      background: var(--g-primary);
+      border-radius: 50%;
+      color: #fff; font-size: 1.3rem;
+      border: none; cursor: pointer;
+      box-shadow: var(--sh-l);
+      align-items: center; justify-content: center;
+    }
+
+    /* ── CHIPS DE SEMANA ─────────────────────────────── */
+    .week-chips-wrap {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin: 10px 0 16px;
+    }
+    .week-chip {
+      width: 40px; height: 34px;
+      border-radius: var(--r-s);
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .74rem; font-weight: 700;
+      cursor: pointer;
+      transition: var(--tr);
+      color: var(--txt-m);
+    }
+    .week-chip:hover { border-color: var(--primary); color: var(--primary); }
+    .week-chip.selected {
+      background: var(--g-primary);
+      border-color: transparent;
+      color: #fff;
+    }
+    .week-chip.has-files {
+      border-color: rgba(147,51,234,.4);
+      color: var(--primary);
+    }
+    .week-chip.selected.has-files { color: #fff; }
+
+    /* ── RUTA PREVIEW ────────────────────────────────── */
+    .ruta-preview-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-m);
+      padding: 8px 14px;
+      font-family: monospace;
+      font-size: .78rem;
+      color: var(--primary);
+      margin: 8px 0 0;
+      word-break: break-all;
+    }
+
+    /* ── UPLOAD ÁREA ─────────────────────────────────── */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--r-l);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--tr);
+      background: var(--bg);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--primary);
+      background: var(--bg2);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0;
+      opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-icon-big { font-size: 2.5rem; margin-bottom: 8px; }
+    .upload-label { font-size: .9rem; font-weight: 600; color: var(--txt); }
+    .upload-sub   { font-size: .78rem; color: var(--txt-m); margin-top: 4px; }
+    .file-selected-badge {
+      display: none;
+      align-items: center; gap: 8px;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: rgba(147,51,234,.1);
+      border: 1px solid rgba(147,51,234,.25);
+      border-radius: var(--r-m);
+      font-size: .84rem; color: var(--primary); font-weight: 600;
+    }
+    .file-selected-badge.show { display: flex; }
+
+    /* ── TABLA ARCHIVOS ──────────────────────────────── */
+    .table-wrap { overflow-x: auto; border-radius: var(--r-l); }
+    .adm-table {
+      min-width: 620px;
+    }
+    .ext-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 2px 8px;
+      border-radius: var(--r-f);
+      font-size: .7rem; font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      background: var(--bg2);
+      color: var(--txt-m);
+    }
+    .curso-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--r-f);
+      background: rgba(147,51,234,.1);
+      color: var(--primary);
+      font-size: .74rem; font-weight: 700;
+    }
+
+    /* ── CARDS DE CURSO (gestión) ────────────────────── */
+    .curso-admin-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-l);
+      background: var(--bg);
+      margin-bottom: 10px;
+      transition: var(--tr);
+    }
+    .curso-admin-card:hover { border-color: var(--accent); box-shadow: var(--sh-s); }
+    .cac-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--r-m);
+      background: var(--g-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .cac-info { flex: 1; min-width: 0; }
+    .cac-name { font-weight: 700; font-size: .9rem; color: var(--txt); }
+    .cac-meta { font-size: .74rem; color: var(--txt-m); margin-top: 2px; }
+    .cac-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* ── PROGRESS BAR MINI ───────────────────────────── */
+    .prog-bar {
+      height: 5px; background: var(--bg2);
+      border-radius: var(--r-f); overflow: hidden; margin-top: 5px;
+    }
+    .prog-fill {
+      height: 100%; background: var(--g-primary);
+      border-radius: var(--r-f); transition: width 1s var(--ease);
+    }
+
+    /* ── SKILLS ADMIN ────────────────────────────────── */
+    .skill-admin-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-m);
+      background: var(--bg);
+      margin-bottom: 8px;
+      transition: var(--tr);
+    }
+    .skill-admin-row:hover { border-color: var(--accent); }
+
+    /* ── MENSAJES ────────────────────────────────────── */
+    .msg-card {
+      border: 1px solid var(--border);
+      border-radius: var(--r-l);
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      background: var(--bg);
+      transition: var(--tr);
+    }
+    .msg-card:hover { border-color: var(--accent); }
+    .msg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .msg-autor strong { font-size: .9rem; color: var(--txt); }
+    .msg-autor span   { font-size: .75rem; color: var(--txt-m); margin-left: 8px; }
+    .msg-fecha { font-size: .72rem; color: var(--txt-m); }
+    .msg-asunto { font-size: .84rem; font-weight: 700; color: var(--txt2); margin-bottom: 6px; }
+    .msg-body   { font-size: .84rem; color: var(--txt-m); line-height: 1.65; }
+    .msg-unread { border-left: 3px solid var(--primary); }
+
+    /* ── PANEL DE PERFIL ─────────────────────────────── */
+    .perfil-foto-wrap {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      background: var(--bg2);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      cursor: pointer;
+    }
+    .perfil-foto-wrap input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 10;
+    }
+    .perfil-foto-wrap:hover::after {
+      content: '📷';
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .perfil-foto-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── MODAL EDITAR ARCHIVO ────────────────────────── */
+    .m-edit-overlay {
+      position: fixed; inset: 0; z-index: 5000;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .m-edit-overlay.show { display: flex; animation: fadeIn .2s ease; }
+    .m-edit-box {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 40px;
+      width: 100%; max-width: 560px;
+      box-shadow: var(--sh-xl);
+      animation: slideUp .4s var(--ease);
+      position: relative;
+    }
+    .m-edit-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 900;
+      background: var(--g-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    /* ── MODAL CONFIRMAR ─────────────────────────────── */
+    .m-confirm-overlay {
+      position: fixed; inset: 0; z-index: 6000;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .m-confirm-overlay.show { display: flex; animation: fadeIn .2s ease; }
+    .m-confirm-box {
+      background: var(--card);
+      border: 1.5px solid rgba(239,68,68,.3);
+      border-radius: var(--r-xl);
+      padding: 36px;
+      width: 100%; max-width: 420px;
+      box-shadow: var(--sh-xl);
+      text-align: center;
+      animation: slideUp .3s ease;
+    }
+    .m-confirm-icon { font-size: 3rem; margin-bottom: 14px; display: block; }
+    .m-confirm-title { font-size: 1.15rem; font-weight: 700; color: var(--txt); margin-bottom: 8px; }
+    .m-confirm-msg   { font-size: .875rem; color: var(--txt-m); margin-bottom: 24px; line-height: 1.6; }
+    .m-confirm-btns  { display: flex; gap: 10px; justify-content: center; }
+
+    /* ── NOTIF BADGE ─────────────────────────────────── */
+    .notif-dot {
+      width: 8px; height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 4px;
+    }
+
+    /* ── SECCIÓN CON TABS CRUD ───────────────────────── */
+    .crud-tabs {
+      display: flex; gap: 8px;
+      margin-bottom: 30px;
+      background: var(--bg2);
+      border-radius: var(--r-xl);
+      padding: 6px;
+      border: 1px solid var(--border);
+      box-shadow: var(--sh-s);
+    }
+    .crud-tab {
+      flex: 1; padding: 12px 20px;
+      border-radius: var(--r-l);
+      font-size: .95rem; font-weight: 700;
+      color: var(--txt-m);
+      cursor: pointer;
+      transition: var(--tr);
+      text-align: center;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+    }
+    .crud-tab:hover { color: var(--primary); background: rgba(139,92,246,0.05); }
+    .crud-tab.active {
+      background: var(--bg3);
+      color: var(--primary);
+      box-shadow: var(--sh-s);
+    }
+    .crud-panel { display: none; }
+    .crud-panel.active { display: block; animation: fadeIn .25s ease; }
+
+    /* ── GRID DE SEMANAS ADMIN ───────────────────────── */
+    .semanas-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    @media (max-width: 900px) { .semanas-admin-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 600px) { .semanas-admin-grid { grid-template-columns: repeat(2,1fr); } }
+
+    .sem-admin-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-m);
+      padding: 12px 14px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: var(--tr);
+      position: relative;
+    }
+    .sem-admin-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .sem-admin-card.sel   { border-color: var(--primary); background: rgba(147,51,234,.06); }
+    .sem-admin-card.has   { border-color: rgba(147,51,234,.4); }
+    .sem-num { font-weight: 900; font-size: .95rem; color: var(--txt); }
+    .sem-title-mini {
+      font-size: .7rem; color: var(--txt-m);
+      margin-top: 2px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .sem-count-badge {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--g-primary); color: #fff;
+      font-size: .65rem; font-weight: 800;
+      padding: 2px 7px; border-radius: var(--r-f);
+    }
+
+    /* ── RESPONSIVE SIDEBAR ──────────────────────────── */
+    @media (max-width: 768px) {
+      .side-toggle { display: flex; }
+      .admin-side { transform: translateX(-100%); transition: transform .3s ease; position: fixed !important; z-index: 400; height: 100vh !important; top: 0 !important; }
+      .admin-side.open { transform: translateX(0); }
+      .admin-main { padding: 20px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     NAVBAR ADMIN
+════════════════════════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="../index.html">
+      <div class="logo-icon">🌸</div>
+      <span>Jasmin Elena</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="../index.html"    data-page="inicio">Inicio</a></li>
+      <li><a class="nav-link" href="sobreMi.html"    data-page="sobreMi">Sobre mí</a></li>
+      <li><a class="nav-link" href="cursos.html"     data-page="cursos">Portafolio</a></li>
+      <li><a class="nav-link" href="contacto.html"   data-page="contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions"></div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     LAYOUT ADMIN (Sidebar + Main)
+════════════════════════════════════════════════════════════ -->
+<div class="admin-wrap" id="adminWrap">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
+  <aside class="admin-side" id="adminSide">
+
+    <!-- Perfil mini -->
+    <div class="admin-profile-mini">
+      <div class="admin-avatar" id="sideAvatar">🌸</div>
+      <div class="admin-name"  id="sideName">Cargando…</div>
+      <span class="admin-role-badge">👑 Administradora</span>
+    </div>
+
+    <!-- Navegación -->
+    <div class="adm-label">Panel principal</div>
+    <div class="adm-item active" id="nav-dashboard" onclick="cambiarTab('dashboard')">
+      <span class="ai">📊</span> Dashboard
+    </div>
+    <div class="adm-item" id="nav-archivos" onclick="cambiarTab('archivos')">
+      <span class="ai">📁</span> Archivos
+    </div>
+    <div class="adm-item" id="nav-cursos" onclick="cambiarTab('cursos')">
+      <span class="ai">📚</span> Cursos
+    </div>
+
+    <hr class="adm-separator"/>
+    <div class="adm-label">Personalización</div>
+    <div class="adm-item" id="nav-perfil" onclick="cambiarTab('perfil')">
+      <span class="ai">👤</span> Mi perfil
+    </div>
+    <div class="adm-item" id="nav-skills" onclick="cambiarTab('skills')">
+      <span class="ai">🎯</span> Habilidades
+    </div>
+
+    <hr class="adm-separator"/>
+    <div class="adm-label">Comunicaciones</div>
+    <div class="adm-item" id="nav-mensajes" onclick="cambiarTab('mensajes')">
+      <span class="ai">💌</span> Mensajes <span id="msgDot" class="notif-dot" style="display:none"></span>
+    </div>
+
+    <hr class="adm-separator"/>
+    <div class="adm-label">Sistema</div>
+    <div class="adm-item" id="nav-config" onclick="cambiarTab('config')">
+      <span class="ai">⚙️</span> Configuración
+    </div>
+
+    <!-- Acciones rápidas -->
+    <hr class="adm-separator"/>
+    <button class="btn w-full" style="background:var(--bg2);color:var(--txt-m);border:1px solid var(--border);font-size:.82rem;margin-bottom:8px"
+            onclick="TEMA.toggle()">🌙 Cambiar tema</button>
+    <button class="btn w-full" style="background:rgba(239,68,68,.08);color:#dc2626;border:1px solid rgba(239,68,68,.2);font-size:.82rem"
+            onclick="AUTH.logout()">🚪 Cerrar sesión</button>
+  </aside>
+
+  <!-- ── MAIN ─────────────────────────────────────────────── -->
+  <main class="admin-main" id="adminMain">
+
+    <!-- ════════════════════════════════
+         DASHBOARD
+    ════════════════════════════════ -->
+    <section class="admin-sec active" id="sec-dashboard">
+
+      <!-- Header del Dashboard -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:14px">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:7px;padding:5px 14px;background:rgba(147,51,234,.12);border:1px solid rgba(147,51,234,.2);border-radius:var(--r-f);font-size:.72rem;font-weight:700;color:var(--primary);margin-bottom:10px">
+            📊 Panel Administrativo
+          </div>
+          <h1 class="admin-ptitle">Dashboard</h1>
+          <p class="admin-psub">Resumen general del portafolio académico</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary btn-sm" onclick="ADMIN.renderDashboard()" style="font-size:.8rem">🔄 Actualizar</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- Grid 2 columnas -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px">
+
+        <!-- Progreso por curso -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px;grid-column:span 2">
+          <div class="adm-section-title">📈 Progreso por curso</div>
+          <div id="resumCursos"></div>
+        </div>
+
+      </div>
+
+      <!-- Acciones rápidas -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+        <div class="adm-section-title">⚡ Acciones rápidas</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
+          <button class="btn btn-primary" onclick="cambiarTab('archivos')" style="flex-direction:column;gap:6px;padding:16px;height:auto">
+            <span style="font-size:1.4rem">📁</span><span>Subir archivo</span>
+          </button>
+          <button class="btn btn-secondary" onclick="cambiarTab('cursos')" style="flex-direction:column;gap:6px;padding:16px;height:auto">
+            <span style="font-size:1.4rem">📚</span><span>Gestionar cursos</span>
+          </button>
+          <button class="btn btn-secondary" onclick="cambiarTab('perfil')" style="flex-direction:column;gap:6px;padding:16px;height:auto">
+            <span style="font-size:1.4rem">👤</span><span>Editar perfil</span>
+          </button>
+          <button class="btn btn-secondary" onclick="cambiarTab('mensajes')" style="flex-direction:column;gap:6px;padding:16px;height:auto">
+            <span style="font-size:1.4rem">💌</span><span>Ver mensajes</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         ARCHIVOS (CRUD completo)
+    ════════════════════════════════ -->
+    <section class="admin-sec" id="sec-archivos">
+      <h1 class="admin-ptitle">📁 Gestión de Archivos</h1>
+      <p class="admin-psub">Sube, consulta, edita y elimina los archivos de cada semana</p>
+
+      <!-- TABS internas -->
+      <div class="crud-tabs">
+        <button class="crud-tab active" onclick="switchCrudTab('arc-subir')">⬆️ Subir archivo</button>
+        <button class="crud-tab" onclick="switchCrudTab('arc-lista')">📋 Lista de archivos</button>
+      </div>
+
+      <!-- ── Panel: Subir ── -->
+      <div class="crud-panel active" id="arc-subir">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+
+          <!-- Col izq: formulario -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+            <div class="adm-section-title">Datos del archivo</div>
+
+            <!-- Zona de subida -->
+            <div class="upload-zone" id="uploadZone">
+              <input type="file" id="uploadFileInput"
+                     onchange="ADMIN.onFileSelected(this)"
+                     accept=".pdf,.html,.htm,.css,.js,.ts,.json,.md,.txt,.sql,.py,.png,.jpg,.jpeg,.gif,.svg,.webp,.mp4,.docx,.xlsx,.pptx,.zip"/>
+              <div class="upload-icon-big">📤</div>
+              <div class="upload-label">Arrastra o haz clic para seleccionar</div>
+              <div class="upload-sub">PDF, HTML, CSS, JS, SQL, Python, imágenes, etc.</div>
+            </div>
+            <div class="file-selected-badge" id="fileSelectedBadge">
+              <span id="fileSelectedIcon">📄</span>
+              <span id="fileSelectedName">archivo.pdf</span>
+            </div>
+
+            <!-- Nombre descriptivo -->
+            <div class="form-group mt-4">
+              <label class="form-label" for="arcNombre">📌 Nombre descriptivo <span style="color:#ef4444">*</span></label>
+              <input type="text" class="form-control" id="arcNombre" placeholder="Ej: Introducción a HTML5 – Práctica 1"/>
+            </div>
+
+            <!-- Descripción -->
+            <div class="form-group">
+              <label class="form-label" for="arcDesc">📝 Descripción</label>
+              <textarea class="form-control" id="arcDesc" rows="2"
+                        placeholder="Notas sobre el archivo…" style="min-height:70px"></textarea>
+            </div>
+
+            <button class="btn btn-primary w-full" id="btnRegistrar" onclick="ADMIN.registrarArchivo()" disabled>
+              ✅ Registrar archivo
+            </button>
+          </div>
+
+          <!-- Col der: selección curso + semana -->
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+            <div class="adm-section-title">Ubicación en el portafolio</div>
+
+            <!-- Selector de curso -->
+            <div class="form-group">
+              <label class="form-label" for="arcCurso">📚 Curso <span style="color:#ef4444">*</span></label>
+              <select class="form-control" id="arcCurso" onchange="ADMIN.onCursoChange()">
+                <option value="">— Selecciona un curso —</option>
+              </select>
+            </div>
+
+            <!-- Chips de semana -->
+            <div class="form-label" style="margin-bottom:8px">📅 Semana <span style="color:#ef4444">*</span></div>
+            <div class="week-chips-wrap" id="weekChips"></div>
+
+            <!-- Preview ruta -->
+            <div class="form-label" style="margin-top:12px;margin-bottom:4px">📂 Ruta de guardado</div>
+            <div class="ruta-preview-box" id="rutaPreview">— Selecciona curso y semana —</div>
+            <p style="font-size:.74rem;color:var(--txt-m);margin-top:6px">
+              💡 El archivo se guardará físicamente en esta carpeta del proyecto.
+            </p>
+          </div>
+
+        </div>
+      </div><!-- /arc-subir -->
+
+      <!-- ── Panel: Lista ── -->
+      <div class="crud-panel" id="arc-lista">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap">
+            <div class="adm-section-title" style="margin:0;border:none;padding:0;flex:1">Archivos registrados</div>
+            <select class="form-control" id="filtroListaCurso"
+                    style="width:auto;min-width:200px;font-size:.84rem"
+                    onchange="ADMIN.renderListaArchivos()">
+              <option value="">Todos los cursos</option>
+            </select>
+            <select class="form-control" id="filtroListaSemana"
+                    style="width:auto;min-width:130px;font-size:.84rem"
+                    onchange="ADMIN.renderListaArchivos()">
+              <option value="">Todas las semanas</option>
+            </select>
+            <select class="form-control" id="filtroListaUnidad"
+                    style="width:auto;min-width:130px;font-size:.84rem"
+                    onchange="ADMIN.renderListaArchivos()">
+              <option value="">Todas las unidades</option>
+              <option value="1">Unidad 1</option>
+              <option value="2">Unidad 2</option>
+              <option value="3">Unidad 3</option>
+              <option value="4">Unidad 4</option>
+            </select>
+          </div>
+
+          <div class="table-wrap">
+            <table class="adm-table" id="tablaArchivos">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Nombre</th>
+                  <th>Archivo</th>
+                  <th>U / S</th>
+                  <th>Curso</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyArchivos"></tbody>
+            </table>
+          </div>
+          <div id="emptyArchivos"
+               style="display:none;text-align:center;padding:50px;color:var(--txt-m)">
+            📭 No hay archivos registrados aún
+          </div>
+        </div>
+      </div><!-- /arc-lista -->
+
+    </section>
+
+    <!-- ════════════════════════════════
+         CURSOS (CRUD completo)
+    ════════════════════════════════ -->
+    <section class="admin-sec" id="sec-cursos">
+      <h1 class="admin-ptitle">📚 Gestión de Cursos</h1>
+      <p class="admin-psub">Agrega, edita, visualiza y elimina cursos del portafolio</p>
+
+      <div class="crud-tabs">
+        <button class="crud-tab active" onclick="switchCrudTab('cur-nuevo')">➕ Nuevo curso</button>
+        <button class="crud-tab" onclick="switchCrudTab('cur-lista')">📋 Lista de cursos</button>
+        <button class="crud-tab" onclick="switchCrudTab('cur-semanas')">📅 Semanas</button>
+      </div>
+
+      <!-- Panel: Nuevo curso -->
+      <div class="crud-panel active" id="cur-nuevo">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px;max-width:620px;box-shadow:var(--sh-l);position:relative;overflow:hidden">
+          
+          <!-- Decoración glassmorphism sutil -->
+          <div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:var(--g-primary);opacity:0.08;border-radius:50%;pointer-events:none"></div>
+          <div style="position:absolute;bottom:-30px;left:-30px;width:90px;height:90px;background:#3b82f6;opacity:0.06;border-radius:50%;pointer-events:none"></div>
+          
+          <div class="adm-section-title" style="margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:12px">✨ Registrar Nuevo Curso</div>
+          
+          <div style="display:flex;flex-direction:column;gap:18px;position:relative;z-index:2">
+            
+            <div class="form-group" style="margin:0">
+              <label class="form-label" for="cNombreCurso" style="font-weight:700">📚 Nombre del curso <span style="color:#ef4444">*</span></label>
+              <input type="text" class="form-control" id="cNombreCurso" placeholder="Introduzca el nombre oficial del curso (ej: Cálculo Diferencial)" style="padding:12px 14px;border-radius:var(--r-m);box-shadow:inset 0 2px 4px rgba(0,0,0,0.02)"/>
+            </div>
+
+
+
+            <div class="form-group" style="margin:0">
+              <label class="form-label" for="cDescCurso" style="font-weight:700">📝 Descripción (Opcional)</label>
+              <textarea class="form-control" id="cDescCurso" rows="3"
+                        style="min-height:90px;padding:12px 14px;border-radius:var(--r-m)"
+                        placeholder="Escribe una breve introducción o el objetivo de este curso…"></textarea>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:var(--bg2);padding:16px;border-radius:var(--r-l);border:1px dashed var(--border)">
+              <div class="form-group" style="margin:0">
+                <label class="form-label" for="cIconoCurso" style="font-size:.8rem">😀 Icono representativo</label>
+                <input type="text" class="form-control" id="cIconoCurso" placeholder="📘 🧮 💻 🌐 📊" maxlength="4" style="text-align:center;font-size:1.4rem"/>
+              </div>
+              <div class="form-group" style="margin:0">
+                <label class="form-label" for="cColorCurso" style="font-size:.8rem">🎨 Color de marca</label>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <input type="color" class="form-control" id="cColorCurso" value="#9333ea" style="height:48px;padding:4px 8px;cursor:pointer;flex:1"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin:0">
+              <label class="form-label" for="cImagenCurso" style="font-weight:700">🖼️ URL de la imagen (Opcional)</label>
+              <input type="text" class="form-control" id="cImagenCurso" placeholder="https://images.unsplash.com/..."/>
+              <p style="font-size:.7rem; color:var(--txt-m); margin-top:4px">💡 Puedes usar una URL de Unsplash para una imagen profesional.</p>
+            </div>
+
+            <button class="btn btn-primary w-full" style="padding:14px;font-size:1.05rem;font-weight:800;letter-spacing:0.5px;margin-top:10px;box-shadow:var(--sh-m)" onclick="ADMIN.agregarCurso()">
+              ➕ Crear Curso y Generar 16 Semanas
+            </button>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Lista cursos -->
+      <div class="crud-panel" id="cur-lista">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px">
+          <div class="adm-section-title">Cursos registrados</div>
+          <div id="listaCursos"></div>
+        </div>
+      </div>
+
+      <!-- Panel: Semanas (editar títulos) -->
+      <div class="crud-panel" id="cur-semanas">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap">
+            <div class="adm-section-title" style="margin:0;border:none;padding:0;flex:1">Editar títulos de semanas</div>
+            <select class="form-control" id="semCursoSelect"
+                    style="width:auto;min-width:220px"
+                    onchange="ADMIN.renderSemanasAdmin()">
+              <option value="">— Selecciona curso —</option>
+            </select>
+          </div>
+          <div id="semanasAdminGrid" class="semanas-admin-grid"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ════════════════════════════════
+         PERFIL
+    ════════════════════════════════ -->
+    <section class="admin-sec" id="sec-perfil">
+      <h1 class="admin-ptitle">👤 Mi perfil</h1>
+      <p class="admin-psub">Actualiza tu información personal y de contacto</p>
+
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start">
+
+        <!-- Foto y CV -->
+        <div>
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px;text-align:center;margin-bottom:16px">
+            <div class="adm-section-title" style="text-align:left">Foto de perfil</div>
+            <div class="perfil-foto-wrap" id="adminFotoWrap" style="margin:0 auto 14px" title="Haz clic para cambiar">
+              🌸
+              <input type="file" accept="image/*" onchange="ADMIN.cambiarFoto(this)" title="Cambiar foto"/>
+            </div>
+            <p style="font-size:.74rem;color:var(--txt-m)">Haz clic en la foto para cambiarla</p>
+          </div>
+
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+            <div class="adm-section-title">Currículum (CV)</div>
+            <label class="upload-zone" style="padding:20px;cursor:pointer">
+              <input type="file" accept=".pdf,.docx" onchange="ADMIN.subirCV(this)" style="display:none"/>
+              <div class="upload-icon-big" style="font-size:1.8rem;margin-bottom:6px">📄</div>
+              <div class="upload-label" style="font-size:.84rem">Subir CV</div>
+              <div class="upload-sub">PDF o DOCX</div>
+            </label>
+            <div id="cvStatus" style="font-size:.78rem;color:var(--txt-m);margin-top:8px;text-align:center"></div>
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px">
+          <div class="adm-section-title">Información personal</div>
+          <form onsubmit="ADMIN.guardarPerfil(event)" novalidate>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="form-group">
+                <label class="form-label" for="pNombre">Nombre</label>
+                <input type="text" class="form-control" id="pNombre"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pApellido">Apellido</label>
+                <input type="text" class="form-control" id="pApellido"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pTitulo">Título / cargo</label>
+              <input type="text" class="form-control" id="pTitulo"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pBio">Biografía</label>
+              <textarea class="form-control" id="pBio" rows="3"></textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="form-group">
+                <label class="form-label" for="pCorreo">Correo</label>
+                <input type="email" class="form-control" id="pCorreo"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pTelefono">Teléfono</label>
+                <input type="text" class="form-control" id="pTelefono"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pUbicacion">Ubicación</label>
+              <input type="text" class="form-control" id="pUbicacion"/>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+              <div class="form-group">
+                <label class="form-label" for="pLinkedin">LinkedIn</label>
+                <input type="url" class="form-control" id="pLinkedin" placeholder="https://…"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pGithub">GitHub</label>
+                <input type="url" class="form-control" id="pGithub" placeholder="https://…"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pInstagram">Instagram</label>
+                <input type="url" class="form-control" id="pInstagram" placeholder="https://…"/>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         HABILIDADES
+    ════════════════════════════════ -->
+    <section class="admin-sec" id="sec-skills">
+      <h1 class="admin-ptitle">🎯 Habilidades</h1>
+      <p class="admin-psub">Gestiona las habilidades técnicas mostradas en el portafolio</p>
+
+      <div style="display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start">
+        <!-- Añadir -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+          <div class="adm-section-title">Agregar habilidad</div>
+          <div class="form-group">
+            <label class="form-label" for="skNombre">Habilidad</label>
+            <input type="text" class="form-control" id="skNombre" placeholder="ej: JavaScript"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nivel: <strong id="skNivelLabel">75</strong>%</label>
+            <input type="range" id="skNivel" min="10" max="100" value="75" style="width:100%;accent-color:var(--primary)"
+                   oninput="document.getElementById('skNivelLabel').textContent=this.value"/>
+          </div>
+          <button class="btn btn-primary w-full" onclick="ADMIN.agregarSkill()">➕ Agregar</button>
+        </div>
+
+        <!-- Lista -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+          <div class="adm-section-title">Habilidades actuales</div>
+          <div id="listaSkills"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         MENSAJES
+    ════════════════════════════════ -->
+    <section class="admin-sec" id="sec-mensajes">
+      <h1 class="admin-ptitle">💌 Mensajes</h1>
+      <p class="admin-psub">Mensajes recibidos a través del formulario de contacto</p>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-secondary" onclick="ADMIN.limpiarMensajes()" style="border-color:rgba(239,68,68,.3);color:#dc2626">
+          🗑 Limpiar todos
+        </button>
+      </div>
+      <div id="listaMensajesAdmin"></div>
+    </section>
+
+    <!-- ════════════════════════════════
+         CONFIGURACIÓN
+    ════════════════════════════════ -->
+    <section class="admin-sec" id="sec-config">
+      <h1 class="admin-ptitle">⚙️ Configuración</h1>
+      <p class="admin-psub">Seguridad y gestión del sistema</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+
+        <!-- Cambiar contraseña -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+          <div class="adm-section-title">🔑 Cambiar contraseña admin</div>
+          <div class="form-group">
+            <label class="form-label" for="newPassAdmin">Nueva contraseña</label>
+            <input type="password" class="form-control" id="newPassAdmin" placeholder="Mínimo 6 caracteres"/>
+          </div>
+          <button class="btn btn-primary" onclick="ADMIN.cambiarPass('admin')">
+            🔒 Actualizar contraseña
+          </button>
+        </div>
+
+        <!-- Sesión activa -->
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:26px">
+          <div class="adm-section-title">👑 Sesión activa</div>
+          <div id="sessionInfo" style="font-size:.875rem;color:var(--txt-m);line-height:2"></div>
+          <button class="btn btn-secondary mt-4" style="border-color:rgba(239,68,68,.3);color:#dc2626"
+                  onclick="AUTH.logout()">
+            🚪 Cerrar sesión
+          </button>
+        </div>
+
+        <!-- Mantenimiento -->
+        <div style="background:rgba(147,51,234,.05);border:1.5px solid rgba(147,51,234,.2);border-radius:var(--r-xl);padding:26px;grid-column:span 2">
+          <div class="adm-section-title" style="color:var(--primary)">🔧 Herramientas de Mantenimiento</div>
+          <p style="font-size:.875rem;color:var(--txt-m);margin-bottom:16px">
+            Si tus cursos aparecen como "Unidad 01, Unidad 02...", usa este botón para renombrarlos automáticamente a sus nombres reales (Arquitectura, Legislación, etc.)
+          </p>
+          <button class="btn btn-primary" onclick="ADMIN.repararNombresCursos()">
+            ✅ Corregir Nombres de Materias
+          </button>
+        </div>
+
+        <!-- Reset -->
+        <div style="background:rgba(239,68,68,.05);border:1.5px solid rgba(239,68,68,.2);border-radius:var(--r-xl);padding:26px;grid-column:span 2">
+          <div class="adm-section-title" style="color:#dc2626">⚠️ Zona peligrosa</div>
+          <p style="font-size:.875rem;color:var(--txt-m);margin-bottom:16px">
+            Restablece todos los datos al estado inicial. <strong>Esta acción no se puede deshacer.</strong>
+          </p>
+          <button class="btn" style="background:rgba(239,68,68,.1);color:#dc2626;border:1.5px solid rgba(239,68,68,.3)"
+                  onclick="ADMIN.resetData()">
+            🗑 Restablecer todo
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main><!-- /admin-main -->
+</div><!-- /admin-wrap -->
+
+<!-- ── Botón menú móvil ── -->
+<button class="side-toggle" id="sideToggle" onclick="toggleSide()" title="Menú">☰</button>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: EDITAR ARCHIVO
+════════════════════════════════════════════════════════════ -->
+<div class="m-edit-overlay" id="editArchivoOverlay">
+  <div class="m-edit-box">
+    <div class="m-edit-title">✏️ Editar archivo</div>
+    <input type="hidden" id="editArchivoId"/>
+    <input type="hidden" id="editArchivoCurso"/>
+    <input type="hidden" id="editArchivoSemana"/>
+    <div class="form-group">
+      <label class="form-label" for="editNombre">Nombre descriptivo</label>
+      <input type="text" class="form-control" id="editNombre"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="editDesc">Descripción</label>
+      <textarea class="form-control" id="editDesc" rows="3"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="cerrarEditModal()">Cancelar</button>
+      <button class="btn btn-primary"   onclick="ADMIN.guardarEdicionArchivo()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: EDITAR SEMANA
+════════════════════════════════════════════════════════════ -->
+<div class="m-edit-overlay" id="editSemanaOverlay">
+  <div class="m-edit-box">
+    <div class="m-edit-title">📅 Editar semana</div>
+    <input type="hidden" id="editSemCurso"/>
+    <input type="hidden" id="editSemNum"/>
+    <div class="form-group">
+      <label class="form-label" for="editSemTitulo">Título de la semana</label>
+      <input type="text" class="form-control" id="editSemTitulo"/>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="cerrarSemanaModal()">Cancelar</button>
+      <button class="btn btn-primary"   onclick="ADMIN.guardarEdicionSemana()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: EDITAR CURSO
+════════════════════════════════════════════════════════════ -->
+<div class="m-edit-overlay" id="editCursoOverlay">
+  <div class="m-edit-box">
+    <div class="m-edit-title">✏️ Editar curso</div>
+    <input type="hidden" id="editCursoId"/>
+    <div class="form-group">
+      <label class="form-label" for="editCursoNombre">Nombre</label>
+      <input type="text" class="form-control" id="editCursoNombre"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="editCursoDesc">Descripción</label>
+      <textarea class="form-control" id="editCursoDesc" rows="3"></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="form-group">
+        <label class="form-label" for="editCursoIcono">Icono</label>
+        <input type="text" class="form-control" id="editCursoIcono" maxlength="4"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="editCursoColor">Color</label>
+        <input type="color" class="form-control" id="editCursoColor" style="height:44px;padding:4px 8px;cursor:pointer"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="editCursoImagen">URL de la imagen</label>
+      <input type="text" class="form-control" id="editCursoImagen" placeholder="https://..."/>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="cerrarCursoModal()">Cancelar</button>
+      <button class="btn btn-primary"   onclick="ADMIN.guardarEdicionCurso()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: CONFIRMAR ACCIÓN
+════════════════════════════════════════════════════════════ -->
+<div class="m-confirm-overlay" id="confirmOverlay">
+  <div class="m-confirm-box">
+    <span class="m-confirm-icon" id="confirmIcon">⚠️</span>
+    <div class="m-confirm-title" id="confirmTitle">¿Confirmar acción?</div>
+    <div class="m-confirm-msg"   id="confirmMsg">Esta acción no se puede deshacer.</div>
+    <div class="m-confirm-btns">
+      <button class="btn btn-secondary" onclick="cerrarConfirm()">Cancelar</button>
+      <button class="btn" id="confirmOkBtn"
+              style="background:#ef4444;color:#fff"
+              onclick="ejecutarConfirm()">🗑 Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: ÉXITO (Feedback Positivo)
+════════════════════════════════════════════════════════════ -->
+<div class="m-confirm-overlay" id="successOverlay" style="z-index:9000">
+  <div class="m-confirm-box" style="border-color:rgba(34,197,94,.3)">
+    <div style="width:80px;height:80px;background:rgba(34,197,94,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+      <span style="font-size:3rem">✅</span>
+    </div>
+    <div class="m-confirm-title" id="successTitle" style="color:var(--txt)">¡Acción Exitosa!</div>
+    <div class="m-confirm-msg"   id="successMsg" style="margin-bottom:28px">Los cambios se han guardado correctamente.</div>
+    <div class="m-confirm-btns">
+      <button class="btn btn-primary" onclick="cerrarSuccess()" style="padding:10px 40px; font-weight:800">ENTENDIDO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../controladores/supabase.js"></script>
+
+<script src="../recursos/js/app.js"></script>
+<script src="../recursos/js/visor.js"></script>
+<script src="../recursos/js/admin.js"></script>
+<script>
+/* ── GUARD: verificar sesión ───────────────────── */
+(async function() {
+  const s = await window.SupabaseCtrl.getSession();
+  if (!s || !s.logged || s.rol !== 'admin') {
+    window.location.replace('login.html');
+  }
+})();
+
+/* ── TABS SIDEBAR ───────────────────────────────── */
+const TABS = ['dashboard','archivos','cursos','perfil','skills','mensajes','config'];
+
+function cambiarTab(tab) {
+  TABS.forEach(t => {
+    document.getElementById('sec-' + t)?.classList.remove('active');
+    document.getElementById('nav-' + t)?.classList.remove('active');
+  });
+  document.getElementById('sec-' + tab)?.classList.add('active');
+  document.getElementById('nav-' + tab)?.classList.add('active');
+  ADMIN.onTabChange(tab);
+
+  // Cerrar sidebar en móvil
+  document.getElementById('adminSide')?.classList.remove('open');
+}
+
+/* ── TABS CRUD INTERNOS ─────────────────────────── */
+const _crudTabGroups = {};
+function switchCrudTab(panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const parent = panel.parentElement;
+  parent.querySelectorAll('.crud-panel').forEach(p => p.classList.remove('active'));
+  panel.classList.add('active');
+  const tabs = parent.querySelectorAll('.crud-tab');
+  const panels = parent.querySelectorAll('.crud-panel');
+  tabs.forEach((tab, i) => {
+    tab.classList.toggle('active', panels[i] === panel);
+  });
+}
+
+/* ── SIDEBAR MÓVIL ──────────────────────────────── */
+function toggleSide() {
+  document.getElementById('adminSide').classList.toggle('open');
+}
+
+/* ── MODALES ────────────────────────────────────── */
+let _confirmCallback = null;
+
+async function abrirEditArchivo(cursoId, semanaNum, archivoId) {
+  const archivos = await window.SupabaseCtrl.getArchivos(cursoId, semanaNum);
+  const archivo = archivos.find(a => a.id === archivoId);
+  if (!archivo) return;
+  document.getElementById('editArchivoId').value    = archivoId;
+  document.getElementById('editArchivoCurso').value = cursoId;
+  document.getElementById('editArchivoSemana').value= semanaNum;
+  document.getElementById('editNombre').value = archivo.nombre;
+  document.getElementById('editDesc').value   = archivo.descripcion || '';
+  document.getElementById('editArchivoOverlay').classList.add('show');
+}
+function cerrarEditModal() {
+  document.getElementById('editArchivoOverlay').classList.remove('show');
+}
+
+async function abrirEditSemana(cursoId, semanaNum) {
+  const curso  = await window.SupabaseCtrl.getCurso(cursoId);
+  const semana = curso?.semanas.find(s => s.numero === semanaNum);
+  if (!semana) return;
+  document.getElementById('editSemCurso').value  = cursoId;
+  document.getElementById('editSemNum').value    = semanaNum;
+  document.getElementById('editSemTitulo').value = semana.titulo;
+  document.getElementById('editSemanaOverlay').classList.add('show');
+}
+function cerrarSemanaModal() {
+  document.getElementById('editSemanaOverlay').classList.remove('show');
+}
+
+async function abrirEditCurso(id) {
+  const curso = await window.SupabaseCtrl.getCurso(id);
+  if (!curso) return;
+  document.getElementById('editCursoId').value     = id;
+  document.getElementById('editCursoNombre').value = curso.nombre;
+  document.getElementById('editCursoDesc').value   = curso.descripcion || '';
+  document.getElementById('editCursoIcono').value  = curso.icono || '📘';
+  document.getElementById('editCursoColor').value  = curso.color || '#9333ea';
+  document.getElementById('editCursoImagen').value = curso.imagen_url || '';
+  document.getElementById('editCursoOverlay').classList.add('show');
+}
+function cerrarCursoModal() {
+  document.getElementById('editCursoOverlay').classList.remove('show');
+}
+
+function pedirConfirm(icon, title, msg, callback) {
+  _confirmCallback = callback;
+  document.getElementById('confirmIcon').textContent  = icon;
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent   = msg;
+  document.getElementById('confirmOverlay').classList.add('show');
+}
+function cerrarConfirm()  { document.getElementById('confirmOverlay').classList.remove('show'); _confirmCallback = null; }
+function ejecutarConfirm() { const cb = _confirmCallback; cerrarConfirm(); if (cb) cb(); }
+
+/* Cerrar modales con Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    cerrarEditModal(); cerrarSemanaModal();
+    cerrarCursoModal(); cerrarConfirm();
+  }
+});
+
+/* ── INIT ───────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', async () => {
+  initNav('admin');
+  VISOR._build();
+  ADMIN.init();
+});
+</script>
+</body>
+</html>

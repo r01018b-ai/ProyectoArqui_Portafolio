@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio Personal · Jasmin Elena</title>
+  <meta name="description" content="Portafolio personal de Jasmin Elena Acosta Fernández, estudiante de Ingeniería de Sistemas y Computación. Cursos, proyectos y trayectoria académica." />
+  <link rel="stylesheet" href="recursos/css/estilos.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="index.html">
+      <div class="logo-icon">🌸</div>
+      <span>Jasmin Elena</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="index.html" data-page="inicio">Inicio</a></li>
+      <li><a class="nav-link" href="vistas/sobreMi.html" data-page="sobreMi">Sobre mí</a></li>
+      <li><a class="nav-link" href="vistas/cursos.html" data-page="cursos">Portafolio</a></li>
+      <li><a class="nav-link" href="vistas/contacto.html" data-page="contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <button class="btn-theme" onclick="TEMA.toggle()" title="Cambiar tema">🌙</button>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-container">
+    <div class="hero-text fade-in-up">
+      <div class="hero-badge" style="background:var(--bg2);border:1.5px solid var(--border);color:var(--primary);font-weight:900;font-size:.8rem;letter-spacing:1px;text-transform:uppercase">✨ Portafolio Académico 2026</div>
+      <h1 class="hero-title" style="font-family:'Playfair Display',serif;font-size:clamp(3rem, 10vw, 4.5rem);font-weight:900;line-height:1;margin:20px 0">
+        Hola, soy<br>
+        <span class="hl" id="heroNombre" style="background:var(--g-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Jasmin Elena</span>
+      </h1>
+      <p class="hero-subtitle" id="heroTitulo" style="font-size:1.4rem;font-weight:800;color:var(--txt2);margin-bottom:20px;letter-spacing:.5px">Ingeniera de Sistemas en Formación</p>
+      <p class="hero-desc" id="heroBio" style="font-size:1.1rem;color:var(--txt-m);line-height:1.8;max-width:550px;margin-bottom:40px">Transformando la complejidad en elegancia a través del código y la arquitectura de software.</p>
+      <div class="hero-btns" style="display:flex;gap:15px;flex-wrap:wrap">
+        <a href="vistas/sobreMi.html" class="btn btn-primary" style="padding:18px 36px;font-size:1rem;border-radius:14px">Conóceme más 💜</a>
+        <a href="vistas/cursos.html" class="btn btn-secondary" style="padding:18px 36px;font-size:1rem;border-radius:14px;border:2.5px solid var(--border)">Ver portafolio</a>
+      </div>
+      <div class="hero-stats" style="margin-top:50px;padding-top:30px;border-top:1.5px solid var(--border);display:flex;gap:40px">
+        <div class="hero-stat"><span class="sn" style="font-size:2.5rem;font-weight:900;color:var(--primary)">5</span><span class="sl" style="font-size:.85rem;font-weight:800;color:var(--txt-m);text-transform:uppercase">Cursos</span></div>
+        <div class="hero-stat"><span class="sn" style="font-size:2.5rem;font-weight:900;color:var(--primary)">16</span><span class="sl" style="font-size:.85rem;font-weight:800;color:var(--txt-m);text-transform:uppercase">Semanas</span></div>
+        <div class="hero-stat"><span class="sn" id="statArchivos" style="font-size:2.5rem;font-weight:900;color:var(--primary)">0</span><span class="sl" style="font-size:.85rem;font-weight:800;color:var(--txt-m);text-transform:uppercase">Archivos</span></div>
+      </div>
+    </div>
+
+    <div class="hero-img-wrap fade-in-up" style="animation-delay:0.3s">
+      <div class="hero-frame" style="width:400px;height:480px;border-radius:40px;position:relative">
+        <div style="position:absolute;inset:-15px;background:var(--g-primary);border-radius:50px;opacity:0.25;filter:blur(30px);z-index:0"></div>
+        <div class="hero-photo" id="heroPhoto" style="width:100%;height:100%;border-radius:35px;background:var(--bg3);border:2px solid var(--border);overflow:hidden;z-index:1;display:flex;align-items:center;justify-content:center;font-size:10rem">🌸</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="controladores/supabase.js"></script>
+
+<script src="recursos/js/app.js"></script>
+<script src="recursos/js/visor.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+
+  if (typeof initNav === "function") initNav('inicio');
+  if (typeof initFadeIn === "function") initFadeIn();
+
+  
+
+  const p = await window.SupabaseCtrl.getPerfil();
+
+  const nombre = p.nombre_completo ||
+    [p.nombre, p.apellido].filter(Boolean).join(' ') ||
+    'Jasmin Elena Acosta Fernández';
+
+  const heroNombre = document.getElementById('heroNombre');
+  if (heroNombre) heroNombre.textContent = nombre;
+
+  const heroTitulo = document.getElementById('heroTitulo');
+  if (heroTitulo) heroTitulo.textContent = p.titulo || '';
+
+  const heroBio = document.getElementById('heroBio');
+  if (heroBio) heroBio.textContent = p.bio || '';
+
+  if (p.foto_url) {
+    const ph = document.getElementById('heroPhoto');
+    if (ph) {
+      ph.innerHTML = `<img src="${p.foto_url}" alt="${nombre}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--r-l)">`;
+    }
+  }
+
+  const stats = await window.SupabaseCtrl.getStats();
+  const sA = document.getElementById('statArchivos');
+  if (sA) sA.textContent = stats.archivos || 0;
+
+  const spEl = document.getElementById('skillsPreview');
+  if (spEl && p.skills) {
+    const skills = p.skills.slice(0, 4);
+    spEl.innerHTML = skills.map(s => `
+      <div class="skill-item">
+        <div class="skill-head">
+          <span>${s.nombre}</span>
+          <span>${s.nivel}%</span>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-fill" style="width:${s.nivel}%"></div>
+        </div>
+      </div>
+    `).join('');
+
+    if (skills.length && typeof animateSkills === "function") {
+      animateSkills();
+    }
+  }
+
+});
+</script>
+
+</body>
+</html>

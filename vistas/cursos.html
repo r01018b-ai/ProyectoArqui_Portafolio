@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio · Cursos · Jasmin Elena</title>
+  <meta name="description" content="Explora los cursos académicos de Jasmin Elena con materiales organizados por semanas." />
+  <link rel="stylesheet" href="../recursos/css/estilos.css" />
+  <style>
+    /* ─── ENCABEZADO DE PÁGINA ────────────────────────── */
+    .page-header {
+      padding: 120px 24px 60px;
+      text-align: center;
+      background: var(--g-hero);
+      position: relative;
+      overflow: hidden;
+    }
+    .ph-inner { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; }
+    .ph-icon { font-size: 3.5rem; display: block; margin-bottom: 20px; animation: float 4s ease-in-out infinite; }
+    .ph-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; margin-bottom: 16px; color: var(--txt); }
+    .ph-title .grad { background: var(--g-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .ph-desc { font-size: 1.1rem; color: var(--txt-m); line-height: 1.6; max-width: 600px; margin: 0 auto; }
+
+    /* ─── BARRA DE BÚSQUEDA CYBER ────────────────────── */
+    .search-container {
+      max-width: 500px; margin: 0 auto 40px; position: relative;
+    }
+    .search-input {
+      width: 100%; padding: 18px 24px 18px 56px; border-radius: 20px;
+      background: var(--bg2); border: 2.5px solid var(--border);
+      color: var(--txt); font-size: 1.05rem; font-weight: 600;
+      transition: var(--tr); box-shadow: var(--sh-s);
+    }
+    .search-input:focus {
+      border-color: var(--primary); outline: none;
+      box-shadow: 0 0 25px rgba(139,92,246,0.15);
+      background: var(--bg3);
+    }
+    .search-icon {
+      position: absolute; left: 22px; top: 50%; transform: translateY(-50%);
+      font-size: 1.4rem; color: var(--primary);
+    }
+
+    /* ─── TARJETAS DE CURSO REFINADAS ────────────────── */
+    .cursos-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;
+    }
+    .curso-card {
+      background: var(--bg3); border-radius: var(--r-l); border: 1.5px solid var(--border);
+      overflow: hidden; transition: var(--tr); position: relative;
+      display: flex; flex-direction: column;
+      box-shadow: var(--sh-m);
+    }
+    .curso-card:hover {
+      transform: translateY(-12px) scale(1.02) rotate(1deg);
+      box-shadow: var(--sh-xl); border-color: var(--primary);
+    }
+    .curso-banner {
+      height: 180px; position: relative; overflow: hidden;
+    }
+    .banner-img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease);
+    }
+    .curso-card:hover .banner-img { transform: scale(1.15); }
+    .banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    }
+    .curso-icon-badge {
+      position: absolute; bottom: 16px; left: 20px;
+      width: 56px; height: 56px; background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(12px); border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+    .curso-weeks-tag {
+      position: absolute; top: 16px; right: 20px;
+      padding: 6px 14px; background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px); border-radius: var(--r-f);
+      color: #fff; font-size: .75rem; font-weight: 800; letter-spacing: 0.5px;
+    }
+    
+    .curso-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
+    .curso-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--txt); margin-bottom: 10px; }
+    .curso-info-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .info-item {
+      flex: 1; background: var(--bg2); padding: 12px; border-radius: var(--r-m);
+      text-align: center; border: 1px solid var(--border);
+    }
+    .info-val { font-weight: 800; font-size: .95rem; color: var(--primary); }
+    .info-lbl { font-size: .65rem; font-weight: 800; color: var(--txt-m); text-transform: uppercase; margin-top: 2px; }
+
+    .prog-mini-wrap { background: var(--bg2); padding: 10px 16px; border-radius: var(--r-m); margin-bottom: 24px; }
+    .prog-mini-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: .75rem; font-weight: 800; color: var(--primary); }
+    .prog-mini-bar { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
+    .prog-mini-fill { height: 100%; background: var(--g-primary); border-radius: 10px; transition: width 1s var(--ease); }
+
+    .btn-entrar {
+      margin-top: auto; width: 100%; border-radius: var(--r-m); font-weight: 900;
+      padding: 16px; letter-spacing: 1px;
+    }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  </style>
+</head>
+<body>
+<div class="mesh-bg">
+  <div class="mesh-ball ball-1"></div>
+  <div class="mesh-ball ball-2"></div>
+  <div class="mesh-ball ball-3"></div>
+</div>
+
+<!-- ── NAVBAR ──────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo" href="../index.html">
+      <div class="logo-icon">🌸</div>
+      <span>Jasmin Elena</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="nav-link" href="../index.html"       data-page="inicio">Inicio</a></li>
+      <li><a class="nav-link" href="sobreMi.html"        data-page="sobreMi">Sobre mí</a></li>
+      <li><a class="nav-link" href="cursos.html"         data-page="cursos">Portafolio</a></li>
+      <li><a class="nav-link" href="contacto.html"       data-page="contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <button class="btn-theme" onclick="TEMA.toggle()">🌙</button>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── PAGE HEADER ─────────────────────────────────────────── -->
+<header class="page-header">
+  <div class="ph-inner">
+    <span class="ph-icon">📚</span>
+    <h1 class="ph-title">Mi <span class="grad">Portafolio</span></h1>
+    <p class="ph-desc">Explora mis cursos académicos organizados en 16 semanas. Cada semana contiene archivos, apuntes, ejercicios y parciales diseñados para tu aprendizaje.</p>
+  </div>
+</header>
+
+<!-- ── FILTRO / BUSCADOR ─────────────────────────────────────── -->
+<section class="section" style="padding-top: 40px; padding-bottom: 20px;">
+  <div class="container">
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="buscarCurso"
+             placeholder="Buscar materia o concepto…"
+             oninput="filtrarCursos(this.value)">
+      <div style="position:absolute; right:20px; top:50%; transform:translateY(-50%); font-size:.8rem; font-weight:800; color:var(--txt-m);" id="cursosCount"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GRID DE CURSOS ────────────────────────────────────────── -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="cursos-grid" id="cursosGrid"></div>
+    <!-- Estado vacío -->
+    <div id="emptyCursos" class="hidden" style="text-align:center;padding:80px 20px;color:var(--txt-m)">
+      <div style="font-size:4rem;margin-bottom:16px">🔍</div>
+      <h3 style="color:var(--txt);margin-bottom:8px">Sin resultados</h3>
+      <p>No se encontraron cursos que coincidan con tu búsqueda.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <div class="logo-icon">🌸</div><span>Jasmin Elena</span>
+      </div>
+      <p class="footer-desc">Portafolio académico de Ingeniería de Sistemas. Documentación completa y materiales de estudio.</p>
+      <div class="social-links" id="fSocial"></div>
+    </div>
+    <div class="footer-col">
+      <h4>Navegación</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="../index.html">Inicio</a>
+        <a class="footer-link" href="sobreMi.html">Sobre mí</a>
+        <a class="footer-link" href="cursos.html">Portafolio</a>
+        <a class="footer-link" href="contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Acceso Privado</h4>
+      <div class="footer-links">
+        <a class="footer-link" href="login.html">Iniciar sesión</a>
+        <a class="footer-link" href="admin.html">Panel administrador</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Jasmin Elena Acosta Fernández. Hecho con <span class="heart">💜</span> para el mundo.</span>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../controladores/supabase.js"></script>
+
+<script src="../recursos/js/app.js"></script>
+<script>
+  let _todosLos = [];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    initNav('cursos');
+    _todosLos = await window.SupabaseCtrl.getCursos();
+    renderGrid(_todosLos);
+
+    const p = await window.SupabaseCtrl.getPerfil();
+    const fS = document.getElementById('fSocial');
+    if (fS && p) {
+      fS.innerHTML = `
+        <a class="social-link" href="${p.linkedin||'#'}" title="LinkedIn">in</a>
+        <a class="social-link" href="${p.github||'#'}"   title="GitHub">gh</a>
+        <a class="social-link" href="${p.instagram||'#'}" title="Instagram">ig</a>`;
+    }
+  });
+
+  function renderGrid(cursos) {
+    const grid  = document.getElementById('cursosGrid');
+    const empty = document.getElementById('emptyCursos');
+    const count = document.getElementById('cursosCount');
+
+    if (count) count.textContent = `${cursos.length} curso${cursos.length !== 1 ? 's' : ''}`;
+
+    if (!cursos.length) {
+      grid.innerHTML  = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+
+    const COURSE_IMAGES = {
+      'matematica-discreta':  'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800',
+      'calculo-diferencial':  'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800',
+      'programacion-1':       'https://images.unsplash.com/photo-1453847668862-487637052f8a?q=80&w=800',
+      'base-de-datos-1':      'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800',
+      'desarrollo-web-1':     'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800',
+      'default':              'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800'
+    };
+
+    grid.innerHTML = cursos.map(c => {
+      const tot = c.semanas.reduce((a, s) => a + s.archivos.length, 0);
+      const con = c.semanas.filter(s => s.archivos.length > 0).length;
+      const pct = Math.round(con / 16 * 100);
+      const imgSrc = COURSE_IMAGES[c.id] || c.imagen_url || COURSE_IMAGES['default'];
+      
+      return `
+        <a class="curso-card fade-in-up" href="semanas.html?curso=${c.id}" id="cc-${c.id}">
+          <div class="curso-banner">
+            <img src="${imgSrc}" onerror="this.src='${COURSE_IMAGES.default}'" class="banner-img">
+            <div class="banner-overlay"></div>
+            <div class="curso-icon-badge">${c.icono}</div>
+            <div class="curso-weeks-tag">16 SEMANAS</div>
+          </div>
+          <div class="curso-body">
+            <h3 class="curso-name">${c.nombre}</h3>
+            
+            <div class="curso-info-row">
+              <div class="info-item">
+                <div class="info-val">4</div>
+                <div class="info-lbl">Unidades</div>
+              </div>
+              <div class="info-item">
+                <div class="info-val">${tot}</div>
+                <div class="info-lbl">Archivos</div>
+              </div>
+            </div>
+
+            <div class="prog-mini-wrap">
+              <div class="prog-mini-header">
+                <span>PROGRESO</span>
+                <span>${pct}%</span>
+              </div>
+              <div class="prog-mini-bar">
+                <div class="prog-mini-fill" style="width:${pct}%"></div>
+              </div>
+            </div>
+
+            <span class="btn btn-primary btn-entrar">
+              VER CURSO →
+            </span>
+          </div>
+        </a>`;
+    }).join('');
+
+    initFadeIn();
+  }
+
+  function filtrarCursos(query) {
+    const q = query.toLowerCase().trim();
+    if (!q) { renderGrid(_todosLos); return; }
+    renderGrid(_todosLos.filter(c =>
+      c.nombre.toLowerCase().includes(q) || c.descripcion.toLowerCase().includes(q)
+    ));
+  }
+</script>
+</body>
+</html>
